@@ -10,7 +10,7 @@ public class Configuration {
     private Map<String, Integer> entryPointsRates;
     private Map<String, Integer> junctionGreenTimes;
 
-    Configuration(String configFilePath)
+    public Configuration(String configFilePath)
     {
         // Map intitalisation
         entryPointsRates = new HashMap<>();
