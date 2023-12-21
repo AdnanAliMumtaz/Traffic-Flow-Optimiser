@@ -1,5 +1,5 @@
 
-// Not a thread
+// It is a shared memory space
 public class Road {
     private Car[] roadBuffer;
     private int capacity;
@@ -18,18 +18,18 @@ public class Road {
 
     public synchronized boolean addCar(Car car)
     {
-        boolean isRoad = true;
-        if (isFull())
+        // Check if the space is available
+        if (isRoadFull())
         {
-            isRoad = false;
+            return false;
         }
 
+        // Add the car and increase the rear index with size
         roadBuffer[rear] = car;
-        rear = (rear++) % capacity;
+        rear = (rear+ 1) % capacity;
         size++;
 
-
-        return isRoad;
+        return true;
     }
 
     // Testing function
@@ -43,27 +43,29 @@ public class Road {
 
     public synchronized Car removeCar()
     {
-        if (isEmpty())
+        // Check if it is empty
+        if (isRoadEmpty())
         {
             return null;
         }
 
+        // Remove car, and 
         Car removedCar = roadBuffer[front];
         roadBuffer[front] = null;
-        front = (front++) % capacity;
+        front = (front + 1) % capacity;
         size--;
 
         return removedCar;
     }
 
-    public synchronized boolean isFull()
+    public synchronized boolean isRoadFull()
     {
-        return size == capacity;
+        return size >= capacity;
     }
 
-    public synchronized boolean isEmpty()
+    public synchronized boolean isRoadEmpty()
     {
-        return size == 0;
+        return size <= 0;
     }
 
     public synchronized Car[] getCars()
