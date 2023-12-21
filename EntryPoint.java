@@ -1,7 +1,7 @@
 import java.io.IOException;
 import java.util.Random;
 
-// Thread - Need more work
+
 public class EntryPoint extends Thread {
     private String name;
     private int entryRate;
@@ -19,7 +19,6 @@ public class EntryPoint extends Thread {
 
     public void run()
     {
-
         try {
             while (true) {
                 // Sleep based on the entry rate (cars per hour)
@@ -29,9 +28,11 @@ public class EntryPoint extends Thread {
                 // generate a random destination
                 String destination = generateRandomDestination();
 
-                // Create a new vechile and add it to the road
-                Car car = new Car(destination, 3); // need more work
+                // Create a new car and add it to the road
+                Car car = new Car(destination, System.currentTimeMillis()); 
                 road.addCar(car);
+
+                road.checkCar(destination);
             }
         }
         catch (InterruptedException exception)
@@ -61,26 +62,11 @@ public class EntryPoint extends Thread {
             randomDestination = "IndustrialPark";
         }
 
-
-
-        // int generatedNumber;
-        //     if (i < 1)
-        //     {
-        //         generatedNumber = 0;
-        //     }
-        //     else if (i < 3)
-        //     {
-        //         generatedNumber = 1;
-        //     }
-        //     else if (i < 6)
-        //     {
-        //         generatedNumber = 2;
-        //     }
-        //     else{ 
-        //         generatedNumber = 3;
-        //     }
-
-
         return randomDestination;
+    }
+
+    public String getEntryPointName()
+    {
+        return name;
     }
 }

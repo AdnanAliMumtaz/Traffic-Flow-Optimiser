@@ -28,9 +28,17 @@ public class Road {
         rear = (rear++) % capacity;
         size++;
 
-        System.out.println("The car has arrived on the road: " + car.getDestination() );
 
         return isRoad;
+    }
+
+    // Testing function
+    public void checkCar(String destination)
+    {
+        if (roadBuffer[rear].getDestination() == destination)
+        {
+            System.out.println("The car has arrived on the road: " + destination );
+        }
     }
 
     public synchronized Car removeCar()

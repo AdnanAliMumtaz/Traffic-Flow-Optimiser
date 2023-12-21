@@ -27,22 +27,26 @@ public class Junction extends Thread {
     //Thread
     public void run()
     {
-        while (!Thread.interrupted())
+        while (true)
         {
             for (int entryRoute = 0; entryRoute < numEntryRoutes; entryRoute++)
             {
+                // System.out.println("name");
                 if (isGreen(entryRoute))
                 {
                     passCars(entryRoute);
 
                     try {
-                        Thread.sleep(greenTimes[entryRoute] * 1000);
+                        // Thread.sleep(greenTimes[entryRoute] * 1000);
+                        int hour = 1000 * 60 * 60;
+                        sleep( hour / 550);
                     } 
                     catch (InterruptedException exception)
                     {
                         exception.printStackTrace();
                     }
                 }
+                // entryRoute++;
             }
         }
     }
