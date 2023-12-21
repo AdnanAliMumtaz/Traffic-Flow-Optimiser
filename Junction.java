@@ -60,7 +60,7 @@ public class Junction extends Thread {
                 System.out.println("Time: " + Clock.getCurrentTime() + " - " + name + ": Car passed from Entry "
                 + entryRoute + " to Exit " + car.getDestination());
                 
-                entryRoads[entryRoute].removeCar(); // First In First Out queue 
+                // entryRoads[entryRoute].removeCar(); // First In First Out queue 
             }
         }
     }

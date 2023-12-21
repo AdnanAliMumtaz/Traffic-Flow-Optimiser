@@ -12,9 +12,9 @@ public class Car {
     }
 
 
-    public void parked() // - Need more work
+    public void parked()
     {
-        //endTime = Clock.getCurrentTime();
+        endTime = System.currentTimeMillis();
     }
 
 

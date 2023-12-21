@@ -1,5 +1,5 @@
 
-// It is a shared memory space
+// It is a shared memory space - Circular Buffer 
 public class Road {
     private Car[] roadBuffer;
     private int capacity;

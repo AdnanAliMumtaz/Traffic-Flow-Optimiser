@@ -1,57 +1,48 @@
-import java.io.IOException;
+// import java.io.IOException;
 
 public class CarPark {
     private String name;
     private int capacity;
+    private Road road;
     private Car[] carParkSpaces;
     private int occupiedSpaces;
 
-    public CarPark(String name, int capacity)
+    public CarPark(String name, int capacity, Road road)
     {
         this.name = name;
         this.capacity = capacity;
+        this.road = road;
         this.carParkSpaces = new Car[capacity];
         this.occupiedSpaces = 0;
     }
 
-    public void run()
-    {
-        while (true)
-        {
-            removeAvailableCars();
-            
+    public void run() {
+        while (true) {
+            //Removing the car from the road
+            admitCarFromRoad();
+
             try {
                 // Sleep for 12 seconds
                 Thread.sleep(12000);
 
             }
-            catch (InterruptedException exception)
-            {
+            catch (InterruptedException exception) {
                 exception.printStackTrace();
             }
         }
     }
 
-    public synchronized void admitCar(Car car)
-    {
-        if (!isFull())
-        {
-            carParkSpaces[occupiedSpaces++] = car;
-            car.parked(); // Indicates the car has been parked
+    public synchronized void admitCarFromRoad() {
+        if (!isCarParkFull()) {
+            Car car = road.removeCar();
+            if (car != null) {
+                carParkSpaces[occupiedSpaces++] = car;
+                car.parked(); // gives a car a timestamp
+            }
         }
     }
 
-    private synchronized void removeAvailableCars()
-    {
-        for (int i=0; i< occupiedSpaces; i++)
-        {
-            carParkSpaces[i] = null;
-        }
-        occupiedSpaces = 0;
-    }
-
-    public synchronized boolean isFull()
-    {
+    public synchronized boolean isCarParkFull() {
         return occupiedSpaces == capacity;
     }
 }
