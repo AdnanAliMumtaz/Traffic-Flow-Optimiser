@@ -1,8 +1,9 @@
 
+// Not a thread
 public class Car {
     private String destinations;
     private long entryTime;
-    private long endTime; // Representing the end times when the car has been parked.
+    private long endTime; 
 
     public Car(String destinations, long entryTime)
     {

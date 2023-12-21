@@ -1,7 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.Reader;
+// import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -53,6 +53,16 @@ public class Configuration {
         }
     }
 
+    public Map<String, Integer> getEntryPoints()
+    {
+        return entryPointsRates;
+    }
+
+    public Map<String, Integer> getJunctions()
+    {
+        return junctionGreenTimes;
+    }
+
     public void output()
     {
         System.out.println("EntryPoints");
@@ -61,7 +71,7 @@ public class Configuration {
             System.out.println(entry.getKey() + ": " + entry.getValue());
         }
 
-        System.out.println("JUNCTIONS");
+        System.out.println("\nJUNCTIONS");
         for (Map.Entry<String, Integer> entry: junctionGreenTimes.entrySet())
         {
             System.out.println(entry.getKey() + ": " + entry.getValue());
