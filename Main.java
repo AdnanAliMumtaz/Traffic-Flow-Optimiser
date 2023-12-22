@@ -2,6 +2,7 @@ import java.util.Random;
 import javax.swing.RowFilter.Entry;
 import java.util.Map;
 import java.util.Date;
+import java.util.HashMap;
 
 public class Main{  
     public static void main(String[] arg)
@@ -13,18 +14,22 @@ public class Main{
         
 
         // How am I going to implement a road of networks.
-        int southRate = entryPoints.get("South");
+        int southRate = entryPoints.get("south");
 
-        // Road road = new Road(60);
-        // EntryPoint entry = new EntryPoint("South", southRate, road);
-        // entry.start();
+        Road road = new Road(5);
+        EntryPoint entry = new EntryPoint("South", southRate, road);
+        entry.start();
 
+        // try {
+        //     entry.join();
+        // }
+        // catch (InterruptedException e)
+        // {
+        //     e.printStackTrace();
+        // }
 
-
-        // // Junction for the roads
-        // Junction junctionA = new Junction("A", 1, 1);  // One entry and one exit route for simplicity
-
-        // // Connect the components
-        // junctionA.start();
+        Junction a = new Junction("A", 60, new Road[]{road}, new Road[]{road});
+        a.start();
     }
 }
+

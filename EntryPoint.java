@@ -29,7 +29,8 @@ public class EntryPoint extends Thread {
                 String destination = generateRandomDestination();
 
                 // Create a new car and add it to the road
-                Car car = new Car(destination, System.currentTimeMillis()); 
+                long time = System.currentTimeMillis();
+                Car car = new Car(destination, time); 
                 road.addCar(car);
 
                 road.checkCar(destination);
@@ -46,16 +47,13 @@ public class EntryPoint extends Thread {
         int randomValue = random.nextInt(totalWeight);
         String randomDestination;
 
-        if (randomValue < 10)
-        {
+        if (randomValue < 10) {
             randomDestination = "University";
         }
-        else if (randomValue < 30)
-        {
+        else if (randomValue < 30) {
             randomDestination = "Station";
         }
-        else if (randomValue < 60)
-        {
+        else if (randomValue < 60) {
             randomDestination = "ShoppingCentre";
         }
         else {

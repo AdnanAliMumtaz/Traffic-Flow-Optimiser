@@ -39,6 +39,7 @@ public class CarPark {
                 carParkSpaces[occupiedSpaces++] = car;
                 car.parked(); // gives a car a timestamp
             }
+            System.out.println("The car has been admitted with destination of " + car.getDestination());
         }
     }
 

@@ -1,105 +1,65 @@
 
+import java.util.HashMap;
+import java.util.Map;
 
 public class Junction extends Thread {
-    private String name;
-    private int numEntryRoutes;
-    private int numExitRoutes;
-    private boolean[][] trafficLights; // 2D array to store state of traffic lights for entry and exit route
-    private int[] greenTimes; // to store the duration of each entry route
-    private Road[] entryRoads; // to store the number of entries in each entry route
-    private Road[] exitRoads; // to store the number of exits in each entry route
+    private String junctionName;
+    private int greenLightTime;
+    private Road[] entryRoads;
+    private Road[] exitRoads;
 
-    public Junction(String name, int numEntryRoutes, int numExitRoutes)
+    public Junction(String name, int greenTime, Road[] entryRoads, Road[] exitRoads)
     {
-        this.name = name;
-        this.numEntryRoutes = numEntryRoutes;
-        this.numExitRoutes  = numExitRoutes;
-        this.trafficLights = new boolean[numEntryRoutes][numExitRoutes];
-        this.greenTimes = new int[numEntryRoutes];
-        this.entryRoads = new Road[numEntryRoutes];
-        this.exitRoads = new Road[numExitRoutes];
-
-        // Initialising the traffic lights and green times
-        initialiseTrafficLights();
-        initialiseGreenTimes();
+        this.junctionName = name;
+        this.greenLightTime = greenTime;
+        this.entryRoads = entryRoads;
+        this.exitRoads = exitRoads;
     }
 
-    //Thread
     public void run()
     {
         while (true)
         {
-            for (int entryRoute = 0; entryRoute < numEntryRoutes; entryRoute++)
+            // Removing the car from the road to move to the next road.
+            for (Road entryRoad : entryRoads)
             {
-                // System.out.println("name");
-                if (isGreen(entryRoute))
-                {
-                    passCars(entryRoute);
-
+                Car removedCar = entryRoad.removeCar();
+                if (removedCar != null) {
+                    // Simulating the car passing
                     try {
-                        // Thread.sleep(greenTimes[entryRoute] * 1000);
-                        int hour = 1000 * 60 * 60;
-                        sleep( hour / 550);
-                    } 
-                    catch (InterruptedException exception)
-                    {
-                        exception.printStackTrace();
-                    }
+                        Thread.sleep(1000 * 60 / 12);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }            
+                    passCar(removedCar);
                 }
-                // entryRoute++;
             }
         }
     }
 
-    private synchronized void passCars(int entryRoute)
+    private void passCar(Car car)
     {
-        for (Car car : entryRoads[entryRoute].getCars())
+        Road exitRoad = getExitRoadForDestination(car.getDestination());
+        if (exitRoad != null && !exitRoad.isRoadFull())
         {
-            if (isSpaceAvailable(entryRoute, car.getDestination()))
-            {
-                System.out.println("Time: " + Clock.getCurrentTime() + " - " + name + ": Car passed from Entry "
-                + entryRoute + " to Exit " + car.getDestination());
-                
-                // entryRoads[entryRoute].removeCar(); // First In First Out queue 
-            }
+            exitRoad.addCar(car);
+            CarPark parking = new CarPark("IndustrialPark", 10, exitRoad);
+            parking.admitCarFromRoad();
+        }
+        else {
+            // Handle the case where there is no space on the exit road
+            // Log this 
         }
     }
 
-    private synchronized boolean isSpaceAvailable(int entryRoute, String desitnation)
+    private Road getExitRoadForDestination(String destination)
     {
-        return true;
-    }
-
-    private synchronized boolean isGreen(int entryRoute)
-    {
-        boolean is = false;
-        for (int exitRoute = 0; exitRoute < numExitRoutes; exitRoute++)
+        if ("A".equals(junctionName) && "IndustrialPark".equals(destination))
         {
-            if (trafficLights[entryRoute][exitRoute])
-            {
-                is = true;
-            }
+            return exitRoads[0];
         }
-        return is;
-    }
-
-    public void initialiseTrafficLights()
-    {
-
-    }
-
-    public void initialiseGreenTimes()
-    {
-        
-    }
-
-    public void setGreenTimes(int[] greenTimes)
-    {
-        if (greenTimes.length != numEntryRoutes)
-        {
-            throw new IllegalArgumentException("Invalid configuration: Green time durations do not match the number of entry routes");
+        else {
+            return exitRoads[0];
         }
-
-        this.greenTimes = greenTimes;
     }
 }
