@@ -44,7 +44,8 @@ public class Junction extends Thread {
         {
             exitRoad.addCar(car);
             CarPark parking = new CarPark("IndustrialPark", 10, exitRoad);
-            parking.admitCarFromRoad();
+            // parking.admitCarFromRoad();
+            parking.start();
         }
         else {
             // Handle the case where there is no space on the exit road

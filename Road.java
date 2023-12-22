@@ -35,9 +35,12 @@ public class Road {
     // Testing function
     public void checkCar(String destination)
     {
-        if (roadBuffer[rear-1].getDestination() == destination)
+        if (rear-1 >= 0 && rear-1 < capacity)
         {
-            System.out.println("The car has arrived on the road: " + destination );
+            if (roadBuffer[rear-1].getDestination() == destination)
+            {
+                System.out.println("The car has arrived on the road: " + destination );
+            }
         }
     }
 

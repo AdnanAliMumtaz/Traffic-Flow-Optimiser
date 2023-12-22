@@ -1,6 +1,6 @@
 // import java.io.IOException;
 
-public class CarPark {
+public class CarPark extends Thread {
     private String name;
     private int capacity;
     private Road road;
@@ -38,8 +38,8 @@ public class CarPark {
             if (car != null) {
                 carParkSpaces[occupiedSpaces++] = car;
                 car.parked(); // gives a car a timestamp
+                System.out.println("The car has been admitted with destination of " + car.getDestination());
             }
-            System.out.println("The car has been admitted with destination of " + car.getDestination());
         }
     }
 
