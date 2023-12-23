@@ -12,27 +12,24 @@ public class Main{
         Map<String, Integer> entryPoints = config.getEntryPoints();
         Map<String, Integer> junctions = config.getJunctions();
         
-
-        // How am I going to implement a road of networks.
+        // Real code to start here
         int southRate = entryPoints.get("south");
 
-        Road road = new Road(10);
-        EntryPoint entry = new EntryPoint("South", southRate, road);
+        // Junction A Roads - Suggestions
+        // Take name of the roads, 
+        Road entryRoadToJunctionA = new Road(60);
+        Road entryRoadToJunctionB = new Road(49);
+        Road exitRoadToDestination = new Road(15);
+
+        EntryPoint entry = new EntryPoint("South", southRate, entryRoadToJunctionA);
         entry.start();
 
-        // try {
-        //     entry.join();
-        // }
-        // catch (InterruptedException e)
-        // {
-        //     e.printStackTrace();
-        // }
-
-        Junction a = new Junction("A", 60, new Road[]{road}, new Road[]{road});
+        Clock clock = new Clock();
+        Junction a = new Junction("A", 60, new Road[]{entryRoadToJunctionA}, new Road[]{entryRoadToJunctionB}, clock);
         a.start();
 
-        // CarPark parking = new CarPark("IndustrialPark", 10, road);
-        // parking.start();
+        Junction b = new Junction("B", 60, new Road[]{entryRoadToJunctionB}, new Road[]{exitRoadToDestination}, clock);
+        b.start();
     }
 }
 

@@ -22,15 +22,18 @@ public class EntryPoint extends Thread {
         try {
             while (true) {
                 // Sleep based on the entry rate (cars per hour)
-                int hour = 1000 * 60 * 60;
+                int hour = 1000 * 60 * 6; // 6 minutes would represent the 60 minutes
                 sleep( hour / entryRate);
 
                 // generate a random destination
-                String destination = generateRandomDestination();
+                // String destination = generateRandomDestination();
+                CarPark destinationParking = generateRandomDestination();
+                String destination = destinationParking.getParkingName(); 
 
                 // Create a new car and add it to the road
                 long time = System.currentTimeMillis();
-                Car car = new Car(destination, time); 
+                Car car = new Car(destination, time);
+                // System.out.println("The car has been generated at EntryPoint with destination of " + car.getDestination());
                 road.addCar(car);
 
                 road.checkCar(destination);
@@ -42,26 +45,48 @@ public class EntryPoint extends Thread {
         }
     }
 
-    private String generateRandomDestination()
-    {
-        int randomValue = random.nextInt(totalWeight);
-        String randomDestination;
+    // private String generateRandomDestination()
+    // {
+    //     int randomValue = random.nextInt(totalWeight);
+    //     String randomDestination;
 
-        if (randomValue < 10) {
-            randomDestination = "University";
+    //     if (randomValue < 10) {
+    //         randomDestination = "University";
+    //     }
+    //     else if (randomValue < 30) {
+    //         randomDestination = "Station";
+    //     }
+    //     else if (randomValue < 60) {
+    //         randomDestination = "ShoppingCentre";
+    //     }
+    //     else {
+    //         randomDestination = "IndustrialPark";
+    //     }
+
+    //     return randomDestination;
+    // }
+
+    private CarPark generateRandomDestination()
+    {
+        int rand = random.nextInt(totalWeight);
+        CarPark parking;
+
+        if (rand < 10) {
+            parking = new CarPark("University", 100, road);
         }
-        else if (randomValue < 30) {
-            randomDestination = "Station";
+        else if (rand < 30) {
+            parking = new CarPark("Station", 150, road);
         }
-        else if (randomValue < 60) {
-            randomDestination = "ShoppingCentre";
+        else if (rand < 60) {
+            parking = new CarPark("ShoppingCentre", 400, road);
         }
         else {
-            randomDestination = "IndustrialPark";
+            parking = new CarPark("IndustrialPark", 1000, road);
         }
 
-        return randomDestination;
+        return parking;
     }
+
 
     public String getEntryPointName()
     {

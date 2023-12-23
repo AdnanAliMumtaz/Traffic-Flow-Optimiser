@@ -22,9 +22,8 @@ public class CarPark extends Thread {
             admitCarFromRoad();
 
             try {
-                // Sleep for 12 seconds
-                Thread.sleep(12000);
-
+                // Sleep for 2 seconds representing 12 seconds
+                Thread.sleep(2000);
             }
             catch (InterruptedException exception) {
                 exception.printStackTrace();
@@ -45,5 +44,10 @@ public class CarPark extends Thread {
 
     public synchronized boolean isCarParkFull() {
         return occupiedSpaces == capacity;
+    }
+
+    public String getParkingName()
+    {
+        return name;
     }
 }

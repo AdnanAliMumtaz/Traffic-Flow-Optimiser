@@ -12,6 +12,9 @@ public class Configuration {
 
     public Configuration(String configFilePath)
     {
+        // Outputing the name of the file
+        System.out.println("Configuration File: " + configFilePath);
+
         // Map intitalisation
         entryPointsRates = new HashMap<>();
         junctionGreenTimes = new HashMap<>();

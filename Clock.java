@@ -1,14 +1,19 @@
 
 
 public class Clock {
-    private static int currentTime = 0;
+    private int currentTime;
 
-    public static synchronized int  getCurrentTime()
+    public Clock()
+    {
+        this.currentTime = 0;
+    }
+
+    public synchronized int  getCurrentTime()
     {
         return currentTime;
     }
 
-    public static synchronized void incrementTime()
+    public synchronized void incrementTime()
     {
         currentTime++;
     }
