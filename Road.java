@@ -63,7 +63,7 @@ public class Road {
 
     public synchronized boolean isRoadFull()
     {
-        return size >= capacity;
+        return size > capacity;
     }
 
     public synchronized boolean isRoadEmpty()

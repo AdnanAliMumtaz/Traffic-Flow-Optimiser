@@ -2,7 +2,7 @@
 public class Car {
     private String destinations;
     private long entryTime;
-    private long endTime; 
+    private long parkedTime; 
 
     public Car(String destinations, long entryTime) {
         this.destinations = destinations;
@@ -10,9 +10,20 @@ public class Car {
     }
 
     public void parked() {
-        endTime = System.currentTimeMillis();
+        parkedTime = System.currentTimeMillis();
     }
 
+    public long getJourneyTime()
+    {
+        if (parkedTime == 0)
+        {
+            return 0;
+        }
+        else
+        {
+            return parkedTime - entryTime;
+        }
+    }
 
     //Getters 
     public String getDestination() {
@@ -23,8 +34,8 @@ public class Car {
         return entryTime;
     }
 
-    public long getEndTime() {
-        return endTime;
+    public long getParkedTime() {
+        return parkedTime;
     }
 
 }
