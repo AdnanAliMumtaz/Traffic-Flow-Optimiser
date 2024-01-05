@@ -1,45 +1,5 @@
 import java.util.concurrent.TimeUnit;
 
-// public class Clock {
-//     private long startTime;
-//     private long currentTime;
-//     private int ticks;
-
-//     public Clock()
-//     {
-//         startTime = System.nanoTime();
-//         this.currentTime = 0;
-//         this.ticks = ticks;
-//     }
-
-//     public synchronized void incrementTime()
-//     {
-//         currentTime++;
-//     }
-
-//     private long startTime;
-//     private long tickDuration; // The duration of each tick in nanoseconds
-
-//     public Clock(long tickDuration) {
-//         this.startTime = System.nanoTime();
-//         this.tickDuration = tickDuration;
-//     }
-
-//     public long getCurrentTime() {
-//         return System.nanoTime() - startTime;
-//     }
-
-//     public int getCurrentTick() {
-//         return (int) (getCurrentTime() / tickDuration);
-//     }
-
-//     public long getTickDuration()
-//     {
-//         return tickDuration;
-//     }
-
-// }
-
 class Clock extends Thread {
     private long currentTime;
     private final long tickDuration;
@@ -73,9 +33,26 @@ class Clock extends Thread {
     }
 
     public long getCurrentTime() {
-        // return currentTime;
         long currentTimeInSeconds = TimeUnit.NANOSECONDS.toSeconds(currentTime);
         return currentTimeInSeconds;
+    }
+
+    // Checked
+    public long fastTrackPerHour(int originalRate) {
+        return 3600000 / (originalRate * 10);
+    }
+
+    // Checked
+    public long fastTrackPerSeconds(long value) {
+        double t = (double) value / 10;
+        return Math.round(t * 1000);  // Convert seconds to milliseconds and round
+    }
+
+    // Checked
+    public long fastTrackPerMinutes(int value)
+    {
+        long sleepDuration = 60000 / (value * 10);
+        return sleepDuration;        
     }
 
     public boolean getRunningTime()
@@ -86,6 +63,8 @@ class Clock extends Thread {
     public void stopThread() {
         running = false;
     }
+
+
 
     public void outputElapsedTime() {
         double elapsedSeconds = TimeUnit.NANOSECONDS.toSeconds(currentTime);
@@ -100,20 +79,3 @@ class Clock extends Thread {
         System.out.println("Actual Elapsed Time: " + minutes + " minutes " + seconds + " seconds");
     }
 }
-
-// class HelloWorld {
-//     public static void main(String[] args) {
-//         Clocking clock = new Clocking(TimeUnit.SECONDS.toNanos(1));
-//         clock.setRunDuration(TimeUnit.SECONDS.toNanos(30)); // Set the desired run duration
-
-//         clock.start();
-
-//         try {
-//             clock.join(); // Wait for the clock thread to finish
-//         } catch (InterruptedException e) {
-//             e.printStackTrace();
-//         }
-
-//         clock.outputElapsedTime();
-//     }
-// }

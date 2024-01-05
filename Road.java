@@ -29,6 +29,8 @@ public class Road {
         rear = (rear+ 1) % capacity;
         size++;
 
+        checkCar(car.getDestination());
+
         return true;
     }
 
@@ -63,7 +65,7 @@ public class Road {
 
     public synchronized boolean isRoadFull()
     {
-        return size > capacity;
+        return size >= capacity;
     }
 
     public synchronized boolean isRoadEmpty()

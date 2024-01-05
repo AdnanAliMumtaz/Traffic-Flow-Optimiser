@@ -110,7 +110,7 @@ public class Junction extends Thread {
                             // Simulating the car passing
                             try {
                                 // Thread.sleep(1000 * 60 / 12);
-                                Thread.sleep(1000 * 12 * 6 / 60);
+                                Thread.sleep(clock.fastTrackPerMinutes(12));
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
@@ -132,7 +132,7 @@ public class Junction extends Thread {
         // return timePassed < ((greenLightTime / 10) * 6);
 
         long elapsedTime = clock.getCurrentTime(); // Assuming getCurrentTime() returns elapsed time in seconds
-        long greenLightDuration = TimeUnit.SECONDS.toNanos(greenLightTime);
+        long greenLightDuration = TimeUnit.SECONDS.toNanos(clock.fastTrackPerSeconds(greenLightTime));
         
         // System.out.println(elapsedTime + "  " + greenLightDuration);
 

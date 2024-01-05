@@ -18,23 +18,10 @@ public class Main{
         
 
         // Main Simulation begins here...
-        
-        // Clocking clock = new Clocking(TimeUnit.SECONDS.toNanos(1));
-//         clock.setRunDuration(TimeUnit.SECONDS.toNanos(30)); // Set the desired run duration
 
-//         clock.start();
-
-//         try {
-//             clock.join(); // Wait for the clock thread to finish
-//         } catch (InterruptedException e) {
-//             e.printStackTrace();
-//         }
-
-//         clock.outputElapsedTime();
-        
         // This records the time 
         Clock clock = new Clock(TimeUnit.SECONDS.toNanos(1));
-        clock.setRunDuration(TimeUnit.SECONDS.toNanos(15));
+        clock.setRunDuration(TimeUnit.SECONDS.toNanos(60));
         clock.start();
 
         // Real code to start here
@@ -82,6 +69,7 @@ public class Main{
 
         IndustrialPark.report();
 
+        // Clock
         try {
             clock.join(); // Wait for the clock thread to finish
         } catch (InterruptedException e) {

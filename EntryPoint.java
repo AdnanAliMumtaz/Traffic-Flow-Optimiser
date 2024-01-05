@@ -26,8 +26,7 @@ public class EntryPoint extends Thread {
             
             while (clock.getRunningTime()) {
                 // Sleep based on the entry rate (cars per hour)
-                int hour = 1000 * 60 * 6; // 6 minutes would represent the 60 minutes
-                sleep( hour / entryRate);
+                sleep(clock.fastTrackPerHour(entryRate));
 
                 // generate a random destination
                 // String destination = generateRandomDestination();
@@ -42,7 +41,7 @@ public class EntryPoint extends Thread {
                     // System.out.println("The car has been generated at EntryPoint with destination of " + car.getDestination());
                     road.addCar(car);
                     carsGeneratedCounter++;
-                    road.checkCar(destination);
+                    // road.checkCar(destination);
                 }
             }
         }

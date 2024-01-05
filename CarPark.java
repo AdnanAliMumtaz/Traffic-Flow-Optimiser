@@ -31,8 +31,9 @@ public class CarPark extends Thread {
             admitCarFromRoad();
 
             try {
-                // Sleep for 2 seconds representing 12 seconds
-                Thread.sleep(2000);
+                // Sleep for 1.2 seconds representing 12 seconds
+                // long fastTime = clock.fastTrackSeconds(12);
+                Thread.sleep(clock.fastTrackPerSeconds(12));
             }
             catch (InterruptedException exception) {
                 exception.printStackTrace();
