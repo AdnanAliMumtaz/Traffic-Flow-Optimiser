@@ -25,7 +25,9 @@ public class EntryPoint extends Thread {
         try {
             
             while (clock.getRunningTime()) {
-                // Sleep based on the entry rate (cars per hour)
+
+                synchronized(road) {
+                    // Sleep based on the entry rate (cars per hour)
                 sleep(clock.fastTrackPerHour(entryRate));
 
                 // generate a random destination
@@ -34,7 +36,7 @@ public class EntryPoint extends Thread {
                 String destination = generateRandomDestination(); 
 
                 // Create a new car and add it to the road
-                long time = System.currentTimeMillis();
+                long time = System.nanoTime();
                 if (!road.isRoadFull())
                 {
                     Car car = new Car(destination, time);
@@ -43,7 +45,10 @@ public class EntryPoint extends Thread {
                     carsGeneratedCounter++;
                     // road.checkCar(destination);
                 }
+
+                }
             }
+
         }
         catch (InterruptedException exception)
         {

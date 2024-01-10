@@ -47,7 +47,7 @@ public class CarPark extends Thread {
             if (car != null) {
                 carParkSpaces[occupiedSpaces++] = car;
                 car.parked(); // gives a car a timestamp
-                System.out.println( name + "The car has been admitted with destination of " + car.getDestination());
+                System.out.println( name + "The car has been admitted with destination of " + car.getDestination() + " " + car.getJourneyTime());
 
                 totalCarsParked++;
                 totalJourneyTime += car.getJourneyTime();

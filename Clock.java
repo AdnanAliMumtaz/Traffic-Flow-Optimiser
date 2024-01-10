@@ -37,18 +37,15 @@ class Clock extends Thread {
         return currentTimeInSeconds;
     }
 
-    // Checked
     public long fastTrackPerHour(int originalRate) {
         return 3600000 / (originalRate * 10);
     }
 
-    // Checked
     public long fastTrackPerSeconds(long value) {
         double t = (double) value / 10;
         return Math.round(t * 1000);  // Convert seconds to milliseconds and round
     }
-
-    // Checked
+    
     public long fastTrackPerMinutes(int value)
     {
         long sleepDuration = 60000 / (value * 10);
@@ -63,8 +60,6 @@ class Clock extends Thread {
     public void stopThread() {
         running = false;
     }
-
-
 
     public void outputElapsedTime() {
         double elapsedSeconds = TimeUnit.NANOSECONDS.toSeconds(currentTime);

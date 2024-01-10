@@ -6,6 +6,7 @@ public class Road {
     private int front;
     private int rear;
     private int size;
+    private boolean valueSet = false;
     
     public Road(int capacity)
     {
@@ -18,6 +19,11 @@ public class Road {
 
     public synchronized boolean addCar(Car car)
     {
+        while (size == capacity) {
+            // when the road is full
+            try {wait(); } catch(InterruptedException e) {}
+        }
+    
         // Check if the space is available
         if (isRoadFull())
         {
@@ -29,7 +35,15 @@ public class Road {
         rear = (rear+ 1) % capacity;
         size++;
 
+        // Just testing
         checkCar(car.getDestination());
+        
+        // when atleast one item is available
+        if (size > 0)
+        {
+            // when atleast one item available.
+            notifyAll();
+        }
 
         return true;
     }
@@ -48,6 +62,11 @@ public class Road {
 
     public synchronized Car removeCar()
     {
+        while (size == 0){
+            // when road is empty
+            try {wait(); } catch(Exception e) {}
+        }
+
         // Check if it is empty
         if (isRoadEmpty())
         {
@@ -60,17 +79,23 @@ public class Road {
         front = (front + 1) % capacity;
         size--;
 
+        // valueSet = false;
+        if (size < capacity) {
+            // Notify the producer that a space is available in the buffer
+            notifyAll();
+        }
+
         return removedCar;
     }
 
     public synchronized boolean isRoadFull()
     {
-        return size >= capacity;
+        return size == capacity;
     }
 
     public synchronized boolean isRoadEmpty()
     {
-        return size <= 0;
+        return size == 0;
     }
 
     public synchronized Car[] getCars()

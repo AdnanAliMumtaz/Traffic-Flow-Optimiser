@@ -7,13 +7,14 @@ public class Car {
     public Car(String destinations, long entryTime) {
         this.destinations = destinations;
         this.entryTime = entryTime;
+        this.parkedTime = 0;
     }
 
     public void parked() {
-        parkedTime = System.currentTimeMillis();
+        parkedTime = System.nanoTime();
     }
 
-    public long getJourneyTime()
+    public double getJourneyTime()
     {
         if (parkedTime == 0)
         {
@@ -21,7 +22,13 @@ public class Car {
         }
         else
         {
-            return parkedTime - entryTime;
+            long nanoseconds = parkedTime - entryTime;
+            // double seconds = nanoseconds / 1_000_000_000.0;
+            double seconds = (nanoseconds * 10) / 1_000_000_000.0;
+            // System.out.println("Duration in seconds: " + seconds);
+
+            // return parkedTime - entryTime;
+            return seconds;
         }
     }
 
