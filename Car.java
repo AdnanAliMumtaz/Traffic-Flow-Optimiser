@@ -32,6 +32,18 @@ public class Car {
         }
     }
 
+    public long getJourneyTimee() {
+        if (parkedTime == 0) {
+            return 0;
+        } else {
+            long nanoseconds = parkedTime - entryTime;
+            long seconds = (long) (nanoseconds / 1_000_000_000.0);
+            // System.out.println("Duration in seconds: " + seconds);
+            return seconds;
+        }
+    }
+     
+
     //Getters 
     public String getDestination() {
         return destinations;

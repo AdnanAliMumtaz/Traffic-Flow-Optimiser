@@ -55,7 +55,7 @@ public class Road {
         {
             if (roadBuffer[rear-1].getDestination() == destination)
             {
-                System.out.println("The car has arrived on the road: " + destination );
+                System.out.println("The car has arrived on the road: " + destination);
             }
         }
     }
@@ -101,5 +101,10 @@ public class Road {
     public synchronized Car[] getCars()
     {
         return roadBuffer;
+    }
+
+    public synchronized int getCarsAmount()
+    {
+        return roadBuffer.length;
     }
 }

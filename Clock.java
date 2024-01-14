@@ -42,8 +42,13 @@ class Clock extends Thread {
     }
 
     public long fastTrackPerSeconds(long value) {
-        double t = (double) value / 10;
-        return Math.round(t * 1000);  // Convert seconds to milliseconds and round
+
+        //Chaning the Code
+        long t = TimeUnit.SECONDS.toMillis((long) (value * 0.1));
+
+        long result = t * 1000;
+
+        return (long) (value * 0.1 * 1000);
     }
     
     public long fastTrackPerMinutes(int value)
@@ -73,4 +78,33 @@ class Clock extends Thread {
 
         System.out.println("Actual Elapsed Time: " + minutes + " minutes " + seconds + " seconds");
     }
+
+    public int getCurrentMinutes()
+    {
+        double elapsedSeconds = TimeUnit.NANOSECONDS.toSeconds(currentTime);
+        double elapsedMinutes = elapsedSeconds / 6;
+
+        // Extract minutes and seconds
+        int minutes = (int) elapsedMinutes;
+        // int seconds = (int) ((elapsedMinutes - minutes) * 60);
+
+        // System.out.println("Actual Elapsed Time: " + minutes + " minutes " + seconds + " seconds");
+
+        return minutes;
+    }
+
+    public int getCurrentSeconds()
+    {
+        double elapsedSeconds = TimeUnit.NANOSECONDS.toSeconds(currentTime);
+        double elapsedMinutes = elapsedSeconds / 6;
+
+        // Extract minutes and seconds
+        int minutes = (int) elapsedMinutes;
+        int seconds = (int) ((elapsedMinutes - minutes) * 60);
+
+        // System.out.println("Actual Elapsed Time: " + minutes + " minutes " + seconds + " seconds");
+
+        return seconds;
+    }
+
 }

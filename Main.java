@@ -1,6 +1,5 @@
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
-
 import javax.imageio.stream.IIOByteBuffer;
 import javax.swing.RowFilter.Entry;
 import java.util.Map;
@@ -9,7 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class Main{  
-    public static void main(String[] arg)
+    public static void main(String[] arg) 
     {
         // Reading files 
         Configuration config = new Configuration("Task 1 Scenarios/Scenario1.txt");
@@ -22,70 +21,88 @@ public class Main{
         // This records the time 
         Clock clock = new Clock(TimeUnit.SECONDS.toNanos(1));
         clock.setRunDuration(TimeUnit.SECONDS.toNanos(15));
-        clock.start();
+        // clock.start();
 
         // Real code to start here
         int southRate = entryPoints.get("south");
 
         // Junction Roads 
         // A 
-        Road entryRoadToJunctionA = new Road(60);
+        Road southRoadToA = new Road(3);
         Road exitRoadToIndustrialPark = new Road(15);
-        
+        Road northRoadToA = new Road(3);
+
         // B
         Road exitRoadToJunctionB = new Road(7);
         Road exitRoadToShoppingCentre = new Road(7);
 
 
         // Entry Points 
-        EntryPoint southEntry = new EntryPoint("South", southRate, entryRoadToJunctionA, clock);
-        southEntry.start();
+        EntryPoint southEntry = new EntryPoint("South", southRate, southRoadToA, clock);
+        // southEntry.start();
+
+        EntryPoint northEntry = new EntryPoint("North", southRate, northRoadToA, clock);
+        // northEntry.start();
+
 
         // Junctions 
-        Junction junctionA = new Junction("A", 5, 1, 2, clock);
-        junctionA.setEntry("South", entryRoadToJunctionA);
-        junctionA.setEntry("North", exitRoadToIndustrialPark);
+        String[] sequence = {"South", "North"};
+
+        Junction junctionA = new Junction("A", 60, 1, 2, clock, sequence);
+        junctionA.setEntry("South", southRoadToA);
+        junctionA.setEntry("North", northRoadToA);
         junctionA.setExit("West", exitRoadToIndustrialPark);
         junctionA.setExit("North", exitRoadToJunctionB);
-        junctionA.start();
+        // junctionA.setSequence(sequence);
+        // junctionA.start();
         
-        Junction junctionB = new Junction("B", 5, 3, 2, clock);
-        junctionB.setEntry("South", exitRoadToJunctionB);
-        junctionB.setExit("West", exitRoadToShoppingCentre);
-        junctionB.start();        
+        // String[] se = {"South"};
+        // Junction junctionB = new Junction("B", 50, 3, 2, clock, se);
+        // junctionB.setEntry("South", exitRoadToJunctionB);
+        // junctionB.setExit("West", exitRoadToShoppingCentre);
+        // junctionB.start();        
         
         // Junction junctionC = new Junction("C", 5, 2, 3, clock);
         // Junction junctionD = new Junction("D", 5, 1, 2, clock);
 
         // CarParks - Destination
         CarPark IndustrialPark = new CarPark("IndustrialPark", 1000, exitRoadToIndustrialPark, clock);
+        // IndustrialPark.start();
+
+        // CarPark ShoppingCentre = new CarPark("ShoppingCentre", 400, exitRoadToShoppingCentre, clock);
+        // ShoppingCentre.start();
+
+
+
+        // IndustrialPark.report();
+
+        // ShoppingCentre.report();
+
+        // Clock Output
+        // Start threads
+        clock.start();
+        southEntry.start();
+        northEntry.start();
+        junctionA.start();
         IndustrialPark.start();
-
-        CarPark ShoppingCentre = new CarPark("ShoppingCentre", 400, exitRoadToShoppingCentre, clock);
-        ShoppingCentre.start();
-
-
+        
+        // Wait for threads to complete
         try {
-            IndustrialPark.join();
-            // ShoppingCentre.join();
-        } catch (InterruptedException e)
-        {
+            southEntry.join();
+            northEntry.join();
+            junctionA.join();
+            // IndustrialPark.join();
+            clock.join();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
         IndustrialPark.report();
 
-        // Clock
-        try {
-            clock.join(); // Wait for the clock thread to finish
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-            
+        // Print values
         clock.outputElapsedTime();
-        // Improve the Clock
-        // Compare the brief with the code
-        // Figure out how do i run the run methods 
+        System.out.println(southEntry.getCars());
+        System.out.println(northEntry.getCars());
     }
 }
 

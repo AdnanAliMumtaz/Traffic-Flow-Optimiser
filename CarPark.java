@@ -32,6 +32,7 @@ public class CarPark extends Thread {
 
             try {
                 // Sleep for 1.2 seconds representing 12 seconds
+
                 // long fastTime = clock.fastTrackSeconds(12);
                 Thread.sleep(clock.fastTrackPerSeconds(12));
             }
@@ -68,9 +69,25 @@ public class CarPark extends Thread {
     {
         long averageJourneyTime = (totalCarsParked == 0) ? 0 : totalJourneyTime / totalCarsParked;
         
-        long minutes = TimeUnit.MILLISECONDS.toMinutes(averageJourneyTime);
-        long seconds = TimeUnit.MILLISECONDS.toSeconds(averageJourneyTime) % 60;
+        // long minutes = TimeUnit.MILLISECONDS.toMinutes(averageJourneyTime);
+        // long seconds = TimeUnit.MILLISECONDS.toSeconds(averageJourneyTime) % 60 * 10;
         
-        System.out.println(name + " " + occupiedSpaces + " Cars parked, average journey time " + minutes + "m" + seconds + "s");
+        // System.out.println(name + " " + occupiedSpaces + " Cars parked, average journey time " + minutes + "m" + seconds + "s");
+
+
+
+
+        int elapsedSeconds = (int) averageJourneyTime;
+        int elapsedMinutes = elapsedSeconds / 60;
+
+        // Extract minutes and seconds
+        // int minutes = (int) elapsedMinutes;
+        // int seconds = (int) ((elapsedMinutes - minutes) * 60);
+
+        System.out.println(name + " " + occupiedSpaces + " Cars parked, average journey time " + elapsedMinutes + "m" + elapsedSeconds + "s");
+
+        // System.out.println("Actual Elapsed Time: " + minutes + " minutes " + seconds + " seconds");
+
+        // return minutes;
     }
 }

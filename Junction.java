@@ -11,11 +11,16 @@ public class Junction extends Thread {
     private Road[] exitRoads;
     private Clock clock;
     private int carCounting;
+    private int carsRemaining;
 
     private Map<String, Road> entries;
     private Map<String, Road> exits;
 
-    public Junction(String name, int greenTime, int entryRoadsNums, int exitRoadsNums, Clock clock)
+    private String[] sequence;
+
+    // private boolean isAvailable;
+
+    public Junction(String name, int greenTime, int entryRoadsNums, int exitRoadsNums, Clock clock, String[] sequence)
     {
         this.junctionName = name;
         this.greenLightTime = greenTime;
@@ -23,9 +28,12 @@ public class Junction extends Thread {
         this.exitRoads = new Road[exitRoadsNums];
         this.clock = clock;
         this.carCounting = 0;
+        this.carsRemaining = 0;
 
         this.entries = new HashMap<>();
         this.exits = new HashMap<>();
+
+        this.sequence = sequence;
     }
 
     public synchronized void setEntry(String name, Road road) 
@@ -42,36 +50,68 @@ public class Junction extends Thread {
     {
         while (clock.getRunningTime())
         {
-            if (isGreen())
+            for (String value : sequence)
             {
-                for (Map.Entry<String, Road> entry : entries.entrySet())
-                {
-                    String entryDirection = entry.getKey();
-                    Road entryRoad = entry.getValue();
+                long time = 0;
+                long startTime = System.nanoTime(); 
 
-                    if (entryRoad != null) {
+                while (TimeUnit.SECONDS.toMillis(time) < clock.fastTrackPerSeconds(greenLightTime))
+                {
+                    if (!clock.getRunningTime())
+                    {
+                        break;
+                    }
+
+                    // Operation
+                    Road entryRoad = entries.get(value);
+                    
+                    if (entryRoad != null  && !entryRoad.isRoadEmpty()) {
                         Car removedCar = entryRoad.removeCar();
+
                         if (removedCar != null) {
                             // Simulating the car passing
                             try {
-                                // Thread.sleep(1000 * 60 / 12);
                                 Thread.sleep(clock.fastTrackPerMinutes(12));
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
-                            System.out.println( junctionName + " has received a car with destination of " + removedCar.getDestination());            
-                            passCar(removedCar);                        
+                            // System.out.println("Junction " + junctionName + ": " + carCounting + " cars through from " + removedCar.getDestination());        
+                            passCar(removedCar);           
+                            carCounting++;     
+                            
+                            this.carsRemaining = entryRoad.getCarsAmount();
                         }
                     }
-                }
-                
 
+                    //Time Calculation
+                    long currentTime = System.nanoTime();
+                    time = TimeUnit.NANOSECONDS.toSeconds(currentTime - startTime);
+
+                    // if (TimeUnit.SECONDS.toMillis(time) >=  clock.fastTrackPerSeconds(greenLightTime))
+                    // {
+                    //     System.out.println("Time: " + clock.getCurrentMinutes() + "m" + clock.getCurrentSeconds() + "s - Junction " + junctionName + ": " + carCounting + " cars through from " + value + ", " + this.carsRemaining + " cars waiting");
+                    //     // System.out.println("THE LIGHT HAS GONE RED FOR " + value);
+                    // }
+                }       
+                if (TimeUnit.SECONDS.toMillis(time) >=  clock.fastTrackPerSeconds(greenLightTime))
+                {
+                    System.out.println("Time: " + clock.getCurrentMinutes() + "m" + clock.getCurrentSeconds() + "s - Junction " + junctionName + ": " + carCounting + " cars through from " + value + ", " + this.carsRemaining + " cars waiting");
+                    // System.out.println("THE LIGHT HAS GONE RED FOR " + value);
+                }
+                // else if (TimeUnit.SECONDS.toMillis(time) >=  clock.fastTrackPerSeconds(greenLightTime)) 
+                // {
+                //     System.out.println("Time: " + clock.getCurrentMinutes() + "m" + clock.getCurrentSeconds() + "s - Junction " + junctionName + ": " + carCounting + " cars through from " + value + ", " + this.carsRemaining + " cars waiting. GRIDLOCK");
+                // }
+
+                carCounting = 0;
+                carsRemaining = 0;
             }
-            // else {
-            //     System.out.println("Light has gone RED!");
-            // }
+            if (!clock.getRunningTime())
+            {
+                break;
+            }
         }
-    }
+    }      
 
     private boolean isGreen()
     {
@@ -79,9 +119,10 @@ public class Junction extends Thread {
         // return timePassed < ((greenLightTime / 10) * 6);
 
         long elapsedTime = clock.getCurrentTime(); // Assuming getCurrentTime() returns elapsed time in seconds
-        long greenLightDuration = TimeUnit.SECONDS.toNanos(clock.fastTrackPerSeconds(greenLightTime));
+        long greenLightDuration = clock.fastTrackPerSeconds(greenLightTime);
         
-        // System.out.println(elapsedTime + "  " + greenLightDuration);
+
+        System.out.println("Fastend Version: " +  greenLightDuration);
 
         // return elapsedTime < greenLightDuration;
         return true;
@@ -93,13 +134,9 @@ public class Junction extends Thread {
         if (exitRoad != null && !exitRoad.isRoadFull())
         {
             exitRoad.addCar(car);
-            // /CarPark parking = new CarPark("IndustrialPark", 10, exitRoad);
-            // parking.admitCarFromRoad();
-            // parking.start();
         }
         else {
-            // Handle the case where there is no space on the exit road
-            // Log this 
+
         }
     }
 
