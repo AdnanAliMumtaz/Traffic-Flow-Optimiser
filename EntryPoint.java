@@ -33,23 +33,21 @@ public class EntryPoint extends Thread {
     public void run() {
         while (clock.getRunningTicks()) {
             try {
-                sleep(clock.fastTrackPerHour(entryRate));
-                // Thread.sleep(3000);
+                // sleep(clock.fastTrackPerHour(entryRate));
+                Thread.sleep(1000);
             } catch (InterruptedException e)
             {
                 e.printStackTrace();
             }
 
             String destination = generateRandomDestination();
-
             // Create a new car and add it to the road
             long time = System.nanoTime();
             if (!road.isRoadFull()) {
                 Car car = new Car(destination, time);
-                // System.out.println("The car has been generated at EntryPoint with destination
-                // incrementCounter();
+                // System.out.println("The car has been generated at EntryPoint with destination " + car.getDestination() );
                 road.addCar(car);
-                incrementCounter();
+                // incrementCounter();
                 totalCarsGenerated.incrementAndGet();
             }
         }

@@ -49,21 +49,6 @@ public class CarPark extends Thread {
 
     public void admitCarFromRoad() {
 
-        // synchronized (this) {
-        //     if (!isCarParkFull() && !road.isRoadEmpty()) {
-        //         Car car = road.removeCar();
-        //         if (car != null) {
-        //             carParkSpaces[occupiedSpaces++] = car;
-        //             car.parked(); // gives a car a timestamp
-
-        //             carsParked++;
-        //             totalCarsParked++;
-        //             totalJourneyTime += car.getJourneyTime();
-        //         }
-        //     }
-        // }
-
-
         if (!isCarParkFull()) {
             if (!road.isRoadEmpty()) {
                 Car car = road.removeCar();

@@ -38,7 +38,7 @@ public class Junction extends Thread {
         // Initialise logger
         this.logger = Logger.getLogger(Junction.class.getName() + "." + junctionName);
         try {
-            FileHandler fileHandler = new FileHandler(junctionName + "_log.txt", true);
+            FileHandler fileHandler = new FileHandler(junctionName + "_log.txt", false);
             fileHandler.setFormatter(new CustomFormatter());
             logger.addHandler(fileHandler);
         } catch (IOException e) {

@@ -19,13 +19,13 @@ public class Main {
 
         // Main Simulation begins here...
         Clock clock = new Clock(TimeUnit.SECONDS.toNanos(1));
-        clock.setRunDuration(TimeUnit.SECONDS.toNanos(24));
+        clock.setRunDuration(TimeUnit.SECONDS.toNanos(18));
         // clock.setRunDuration(TimeUnit.MINUTES.toNanos(1));
 
 
         // Junction Roads
         // A
-        Road southRoadToA = new Road(3);
+        Road southRoadToA = new Road(6);
         Road exitRoadToIndustrialPark = new Road(15);
         Road northRoadToA = new Road(2);
 
@@ -87,7 +87,6 @@ public class Main {
         try {
             clock.join();
             southEntry.join();
-            // northEntry.join();
             junctionA.join();
             junctionB.join();
             // junctionC.join();

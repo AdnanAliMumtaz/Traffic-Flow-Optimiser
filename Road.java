@@ -27,7 +27,71 @@ public class Road {
         this.size = 0;
 
         this.count = 0;
+
+        this.totalCars = 0;
+        // getTotalCarsOnRoad = new AtomicInteger(0);
     }
+
+    // public boolean addCar(Car car) {
+    //     lock.lock();
+    //     try {
+    //         while (isRoadFull()) {
+    //             try {
+    //                 notFull.await();
+    //             } catch (InterruptedException e) {
+    //                 Thread.currentThread().interrupt();
+    //             }
+    //         }
+
+    //         // Add the car and increase the rear index with size
+    //         roadBuffer[rear] = car;
+    //         rear = (rear + 1) % capacity;
+    //         size++;
+    //         count++;
+
+    //         // Just testing
+
+    //         getTotalCarsOnRoad.incrementAndGet();
+    //         // totalCars++;
+            
+
+    //         // Notify the consumer that there is a car available
+    //         notEmpty.signal();
+
+    //         return true;
+    //     } finally {
+    //         lock.unlock();
+    //     }
+    // }
+
+    // public Car removeCar() {
+    //     lock.lock();
+    //     try {
+    //         while (isRoadEmpty()) { // If the road is empty
+    //             try {
+    //                 notEmpty.await();
+    //             } catch (InterruptedException e) {
+    //                 Thread.currentThread().interrupt();
+    //             }
+    //         }
+
+    //         // Remove car
+    //         Car removedCar = roadBuffer[front];
+    //         roadBuffer[front] = null;
+    //         front = (front + 1) % capacity;
+    //         size--;
+
+    //         getTotalCarsOnRoad.decrementAndGet();
+    //         // totalCars--;
+
+    //         // Notify the producer that a space is available in the buffer
+    //         notFull.signal();
+
+    //         return removedCar;
+    //     } finally {
+    //         lock.unlock();
+    //     }
+    // }
 
     public boolean addCar(Car car) {
         lock.lock();
@@ -39,56 +103,53 @@ public class Road {
                     Thread.currentThread().interrupt();
                 }
             }
-
-            // Add the car and increase the rear index with size
+    
             roadBuffer[rear] = car;
             rear = (rear + 1) % capacity;
             size++;
             count++;
-
-            // Just testing
-
+    
             getTotalCarsOnRoad.incrementAndGet();
-            // totalCars++;
+
+
+
             
-
-            // Notify the consumer that there is a car available
+    
             notEmpty.signal();
-
+    
             return true;
         } finally {
             lock.unlock();
         }
     }
-
+    
     public Car removeCar() {
         lock.lock();
         try {
-            while (isRoadEmpty()) { // If the road is empty
+            while (isRoadEmpty()) {
                 try {
                     notEmpty.await();
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
             }
-
-            // Remove car
+    
             Car removedCar = roadBuffer[front];
             roadBuffer[front] = null;
             front = (front + 1) % capacity;
             size--;
-
+    
             getTotalCarsOnRoad.decrementAndGet();
-            // totalCars--;
 
-            // Notify the producer that a space is available in the buffer
+
+    
             notFull.signal();
-
             return removedCar;
         } finally {
             lock.unlock();
         }
     }
+    
 
     // public int getTotalCount()
     // {
@@ -109,6 +170,7 @@ public class Road {
 
     public static int getTotalCarsQueued()
     {
+        // return totalCars;
         return getTotalCarsOnRoad.get();
     }
 
