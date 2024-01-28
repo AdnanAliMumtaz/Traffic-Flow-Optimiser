@@ -1,3 +1,4 @@
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -14,7 +15,8 @@ public class Road {
 
     private int count;
 
-    private static int getTotalCarsOnRoad = 0;
+    private static AtomicInteger getTotalCarsOnRoad = new AtomicInteger(0);
+    // private static int getTotalCarsOnRoad = 0;
     private static int totalCars = 0;
 
     public Road(int capacity) {
@@ -45,9 +47,8 @@ public class Road {
             count++;
 
             // Just testing
-            // checkCar(car.getDestination());
 
-            getTotalCarsOnRoad++;
+            getTotalCarsOnRoad.incrementAndGet();
             // totalCars++;
             
 
@@ -77,7 +78,7 @@ public class Road {
             front = (front + 1) % capacity;
             size--;
 
-            getTotalCarsOnRoad--;
+            getTotalCarsOnRoad.decrementAndGet();
             // totalCars--;
 
             // Notify the producer that a space is available in the buffer
@@ -89,10 +90,10 @@ public class Road {
         }
     }
 
-    public int getTotalCount()
-    {
-        return count;
-    }
+    // public int getTotalCount()
+    // {
+    //     return count;
+    // }
 
     public boolean isRoadFull() {
         return size == capacity;
@@ -106,26 +107,12 @@ public class Road {
         return roadBuffer.clone();
     }
 
-    public Car peekCar() {
-        lock.lock();
-        try {
-            if (isRoadEmpty()) {
-                return null; // Road is empty, nothing to peek
-            }
-
-            // Peek at the first car without removing it
-            return roadBuffer[front];
-        } finally {
-            lock.unlock();
-        }
-    }
-
     public static int getTotalCarsQueued()
     {
-        return getTotalCarsOnRoad;
+        return getTotalCarsOnRoad.get();
     }
 
-    public synchronized int getCarsAmount() {
+    public int getCarsAmount() {
         // return roadBuffer.length;
         return size;
     }

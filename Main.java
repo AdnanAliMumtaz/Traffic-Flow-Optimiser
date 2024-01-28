@@ -105,13 +105,12 @@ public class Main {
         // Print values
         // clock.outputElapsedTime();
         System.out.println("Cars remaining on road " + southRoadToA.getCarsAmount() + "  Cars remaining on another road " + northRoadToA.getCarsAmount());
-
         System.out.println("Total Number of Cars Created: " + EntryPoint.getCarsGenerated());
+        System.out.println("Total Number of Cars Queued: " + Road.getTotalCarsQueued());
         System.out.println("Total Number of Cars Parked: " + CarPark.getTotalCarsParked());
 
         // int totalCars = EntryPoint.getCarsGenerated() - CarPark.getTotalCarsParked();
 
-        // System.out.println("Total Number of Cars Queued: " + Road.getTotalCarsQueued());
         // System.out.println("Total Number of Cars Queued: " + totalCars);
 
 

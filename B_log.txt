@@ -1,0 +1,8 @@
+Time: 1m0s - Junction B: 4 cars through from South, 0 cars waiting.
+Time: 2m0s - Junction B: 1 cars through from South, 0 cars waiting.
+Time: 3m0s - Junction B: 5 cars through from South, 0 cars waiting.
+Time: 4m0s - Junction B: 0 cars through from South, 0 cars waiting.
+Time: 1m0s - Junction B: 6 cars through from South, 0 cars waiting.
+Time: 2m0s - Junction B: 1 cars through from South, 0 cars waiting.
+Time: 3m0s - Junction B: 5 cars through from South, 0 cars waiting.
+Time: 4m0s - Junction B: 1 cars through from South, 0 cars waiting.

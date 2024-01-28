@@ -1,8 +1,15 @@
-
 import java.nio.channels.ClosedChannelException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.util.logging.FileHandler;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class Junction extends Thread {
     private String junctionName;
@@ -10,12 +17,11 @@ public class Junction extends Thread {
     private Clock clock;
     private int carCounting;
     private int carsRemaining;
-
     private Map<String, Road> entries;
     private Map<String, Road> exits;
+    private Logger logger;
 
     private String[] sequence;
-
 
     public Junction(String name, int greenTime, Clock clock, String[] sequence) {
         this.junctionName = name;
@@ -28,6 +34,23 @@ public class Junction extends Thread {
         this.exits = new HashMap<>();
 
         this.sequence = sequence;
+
+        // Initialise logger
+        this.logger = Logger.getLogger(Junction.class.getName() + "." + junctionName);
+        try {
+            FileHandler fileHandler = new FileHandler(junctionName + "_log.txt", true);
+            fileHandler.setFormatter(new CustomFormatter());
+            logger.addHandler(fileHandler);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static class CustomFormatter extends SimpleFormatter {
+        @Override
+        public String format(LogRecord record) {
+            return record.getMessage() + "\n";
+        }
     }
 
     public synchronized void setEntry(String name, Road road) {
@@ -55,6 +78,8 @@ public class Junction extends Thread {
             int end = start + (greenLightTime / 10);
 
             Road entryRoad = entries.get(value);
+
+            boolean islocked = false;
             while (clock.getTick() < end && clock.getRunningTicks()) // Green light for entry
             {
                 // Operation
@@ -66,24 +91,42 @@ public class Junction extends Thread {
                     }
 
                     Car removedCar = entryRoad.removeCar();
-                    passCar(removedCar);
+                    islocked = passCar(removedCar);
                     carCounting++;
                 }
             }
             this.carsRemaining = entryRoad.getCarsAmount();
-            System.out.println("Time: " + clock.getCurrentMinutes() + "m" + clock.getCurrentSeconds() + "s - Junction "
-                    + junctionName + ": " + carCounting + " cars through from " + value + ", " + this.carsRemaining
-                    + " cars waiting");
+            // System.out.println("Time: " + clock.getCurrentMinutes() + "m" + clock.getCurrentSeconds() + "s - Junction "
+            //         + junctionName + ": " + carCounting + " cars through from " + value + ", " + this.carsRemaining
+            //         + " cars waiting");
+            logActivity(value, islocked);
+
             carCounting = 0;
         }
     }
 
-    private void passCar(Car car) {
-        Road exitRoad = getExitRoadForDestination(car.getDestination());        
+    private synchronized void logActivity(String direction, boolean isLocked) {
+        String logMessage = "Time: " + clock.getCurrentMinutes() + "m" + clock.getCurrentSeconds() + "s - Junction "
+                + junctionName + ": " + carCounting + " cars through from " + direction + ", " + this.carsRemaining
+                + " cars waiting.";
+    
+        if (this.carsRemaining > 0 && isLocked) {
+            logMessage += " GRIDLOCK";
+        }
+    
+        logger.info(logMessage);
+    }
+
+    private boolean passCar(Car car) {
+        Road exitRoad = getExitRoadForDestination(car.getDestination());
         // if (exitRoad != null && !exitRoad.isRoadFull()) {
         if (!exitRoad.isRoadFull()) {
             exitRoad.addCar(car);
-        } 
+            return true;
+        }
+        else { // if road is full
+            return false;
+        }
     }
 
     private Road getExitRoadForDestination(String destination) {
@@ -99,54 +142,54 @@ public class Junction extends Thread {
             } else {
                 return exits.get("North");
             }
-        }  else {
+        } else {
             return null;
         }
 
         // if ("A" == junctionName)
         // {
-        //     if ("IndustrialPark" == destination) {
-        //         return exits.get("West");
-        //     } else {
-        //         return exits.get("North");
-        //     }
+        // if ("IndustrialPark" == destination) {
+        // return exits.get("West");
+        // } else {
+        // return exits.get("North");
+        // }
         // }
         // else if ("B" == junctionName)
         // {
-        //     if ("IndustrialPark" == destination)
-        //     {
-        //         return exits.get("South");
-        //     }
-        //     else {
-        //         return exits.get("North");
-        //     }
+        // if ("IndustrialPark" == destination)
+        // {
+        // return exits.get("South");
+        // }
+        // else {
+        // return exits.get("North");
+        // }
         // }
         // else if ("C" == junctionName)
         // {
-        //     if ("IndustrialPark" == destination)
-        //     {
-        //         return exits.get("South");
-        //     }
-        //     else if ("ShoppingCentre" == destination)
-        //     {
-        //         return exits.get("West");
-        //     }
-        //     else {
-        //         return exits.get("North");
-        //     }
+        // if ("IndustrialPark" == destination)
+        // {
+        // return exits.get("South");
+        // }
+        // else if ("ShoppingCentre" == destination)
+        // {
+        // return exits.get("West");
+        // }
+        // else {
+        // return exits.get("North");
+        // }
         // }
         // else if ("D" == junctionName)
         // {
-        //     if ("University" == destination)
-        //     {
-        //         return exits.get("North");
-        //     }
-        //     else {
-        //         return exits.get("South");
-        //     }
+        // if ("University" == destination)
+        // {
+        // return exits.get("North");
         // }
         // else {
-        //     return null;
+        // return exits.get("South");
+        // }
+        // }
+        // else {
+        // return null;
         // }
     }
 }

@@ -1,6 +1,7 @@
 
 // import java.io.IOException;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class EntryPoint extends Thread {
     private String name;
@@ -10,8 +11,11 @@ public class EntryPoint extends Thread {
     private static final int totalWeight = 100;
     private int carsGeneratedCounter;
     private Clock clock;
-    private static int totalCarsGenerated = 0;
+    // private static int totalCarsGenerated = 0;
 
+    private static AtomicInteger totalCarsGenerated = new AtomicInteger(0);
+
+    
     public EntryPoint(String name, int entryRate, Road road, Clock clock) {
         this.name = name;
         this.entryRate = entryRate;
@@ -23,7 +27,7 @@ public class EntryPoint extends Thread {
 
     public static int getCarsGenerated()
     {
-        return totalCarsGenerated;
+        return totalCarsGenerated.get();
     }
 
     public void run() {
@@ -46,7 +50,7 @@ public class EntryPoint extends Thread {
                 // incrementCounter();
                 road.addCar(car);
                 incrementCounter();
-                totalCarsGenerated++;
+                totalCarsGenerated.incrementAndGet();
             }
         }
     }
