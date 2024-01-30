@@ -1,3 +1,4 @@
-Time: 1m0s - Junction A: 6 cars through from South, 0 cars waiting.
-Time: 2m0s - Junction A: 0 cars through from North, 0 cars waiting.
-Time: 3m0s - Junction A: 11 cars through from South, 1 cars waiting. GRIDLOCK
+Time: 1m0s - Junction A: 5 cars through from South, 0 cars waiting.
+Time: 2m0s - Junction A: 11 cars through from North, 2 cars waiting.
+Time: 3m0s - Junction A: 12 cars through from South, 6 cars waiting.
+Time: 4m0s - Junction A: 12 cars through from North, 2 cars waiting.

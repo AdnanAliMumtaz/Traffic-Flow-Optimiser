@@ -19,103 +19,111 @@ public class Main {
 
         // Main Simulation begins here...
         Clock clock = new Clock(TimeUnit.SECONDS.toNanos(1));
-        clock.setRunDuration(TimeUnit.SECONDS.toNanos(18));
+        clock.setRunDuration(TimeUnit.SECONDS.toNanos(24));
         // clock.setRunDuration(TimeUnit.MINUTES.toNanos(1));
 
+        // Junction Roads - A
+        Road southEntryA = new Road(6);
+        Road westIndustrialPark = new Road(15);
+        Road northA = new Road(2);
 
-        // Junction Roads
-        // A
-        Road southRoadToA = new Road(6);
-        Road exitRoadToIndustrialPark = new Road(15);
-        Road northRoadToA = new Road(2);
+        // Junction Roads - B
+        Road southB = new Road(5);
+        Road eastEntryB = new Road(5);
+        Road northB = new Road(5);
 
-        // B
-        Road exitRoadToJunctionB = new Road(5);
-        Road eastRoadToB = new Road(5);
-        Road northRoadToB = new Road(5);
-        Road northRoadToC = new Road(5);
+        // Junction Roads - C
+        Road northEntryC = new Road(5);
+        Road westShoppingCentre = new Road(7);
+        Road southC = new Road(4);
 
-        // C
-        Road exitRoadToShoppingCentre = new Road(7);
+        // Junction Roads - D
+        Road northD = new Road(4);
+        Road northUniversity = new Road(5);
+        Road southStation = new Road(6);
 
         // Entry Points
-        EntryPoint southEntry = new EntryPoint("South", southRate, southRoadToA, clock);
-        // EntryPoint northEntry = new EntryPoint("North", northRate, northRoadToA, clock);
+        EntryPoint southEntry = new EntryPoint("South", southRate, southEntryA, clock);
+        EntryPoint eastEntry = new EntryPoint("East", northRate, eastEntryB, clock);
+        EntryPoint northEntry = new EntryPoint("North", northRate, northEntryC, clock);
 
         // Junctions
-        String[] aSequence = { "South","North" };
-        Junction junctionA = new Junction("A", 60, clock, aSequence);
-        junctionA.setEntry("South", southRoadToA);
-        junctionA.setEntry("North", northRoadToA);
-        junctionA.setExit("West", exitRoadToIndustrialPark);
-        junctionA.setExit("North", exitRoadToJunctionB);
+        String[] sequenceA = { "South", "North" };
+        Junction junctionA = new Junction("A", 60, clock, sequenceA);
+        junctionA.setEntry("South", southEntryA);
+        junctionA.setEntry("North", northA);
+        junctionA.setExit("West", westIndustrialPark);
+        junctionA.setExit("North", southB);
 
-        String[] se = {"South"};
-        Junction junctionB = new Junction("B", 60, clock, se);
-        junctionB.setEntry("South", exitRoadToJunctionB);
-        // junctionB.setEntry("East", eastRoadToB);
-        // junctionB.setEntry("North", northRoadToB);
-        junctionB.setExit("West", exitRoadToShoppingCentre);
-        junctionB.setExit("North", northRoadToC);
-        // junctionB.setExit("North", northRoadToC);
+        String[] sequenceB = { "South", "East", "North"};
+        Junction junctionB = new Junction("B", 60, clock, sequenceB);
+        junctionB.setEntry("South", southB);
+        junctionB.setEntry("East", eastEntryB);
+        junctionB.setEntry("North", northB);
+        junctionB.setExit("North", northA);
+        junctionB.setExit("South", southC);
 
+        String[] sequenceC = {"North", "South"};
+        Junction junctionC = new Junction("C", 30, clock, sequenceC);
+        junctionC.setEntry("North", northEntryC);
+        junctionC.setEntry("South", southC);
 
-        // Road northRoadC = new Road(5);
-        // String[] cSequence = {"North", "South"};
-        // Junction junctionC = new Junction("C", 20, clock, cSequence);
-        // junctionC.setEntry("South", northRoadToC);
-        // junctionC.setEntry("North", northRoadC);
-        // junctionC.setExit("West", exitRoadToShoppingCentre);
+        junctionC.setExit("West", westShoppingCentre);
+        junctionC.setExit("South", southB);
+        junctionC.setExit("North", northD);
+
+        String[] sequenceD = {"North"};
+        Junction junctionD = new Junction("D", 30, clock, sequenceD);
+        junctionD.setEntry("North", northD);
+        junctionD.setExit("North", northUniversity);
+        junctionD.setExit("South", southStation);
 
         // CarParks - Destination
-        CarPark IndustrialPark = new CarPark("IndustrialPark", 1000, exitRoadToIndustrialPark, clock);
-        CarPark ShoppingCentre = new CarPark("ShoppingCentre", 400, exitRoadToShoppingCentre, clock);
-
+        CarPark IndustrialPark = new CarPark("IndustrialPark", 1000, westIndustrialPark, clock);
+        CarPark ShoppingCentre = new CarPark("ShoppingCentre", 400, westShoppingCentre, clock);
+        CarPark University = new CarPark("University", 100, northUniversity, clock);
+        CarPark Station = new CarPark("Station", northRate, southStation, clock);
 
         // Start threads
         clock.start();
         southEntry.start();
-        // northEntry.start();
+        eastEntry.start();
+        northEntry.start();
         junctionA.start();
         junctionB.start();
-        // junctionC.start();
+        junctionC.start();
+        junctionD.start();
         IndustrialPark.start();
         ShoppingCentre.start();
-
+        University.start();
+        Station.start();
 
         // Wait for threads to complete
         try {
             clock.join();
             southEntry.join();
+            eastEntry.join();
+            northEntry.join();
             junctionA.join();
             junctionB.join();
-            // junctionC.join();
+            junctionC.join();
+            junctionD.join();
             IndustrialPark.join();
             ShoppingCentre.join();
+            University.join();
+            Station.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
         IndustrialPark.report();
         ShoppingCentre.report();
+        University.report();
+        Station.report();
 
-
-
-        // Print values
-        // clock.outputElapsedTime();
-        System.out.println("Cars remaining on road " + southRoadToA.getCarsAmount() + "  Cars remaining on another road " + northRoadToA.getCarsAmount());
+        System.out.println("\n");
         System.out.println("Total Number of Cars Created: " + EntryPoint.getCarsGenerated());
-        System.out.println("Total Number of Cars Queued: " + Road.getTotalCarsQueued());
+        System.out.println("Total Number of Cars Atomic Queued: " + Road.getTotalCarsQueued());
         System.out.println("Total Number of Cars Parked: " + CarPark.getTotalCarsParked());
-
-        // int totalCars = EntryPoint.getCarsGenerated() - CarPark.getTotalCarsParked();
-
-        // System.out.println("Total Number of Cars Queued: " + totalCars);
-
-
-
-        // System.out.println("South Entry Production " + southEntry.getCars());
-        // System.out.println("North Entry Production " + northEntry.getCars());
-        // System.out.println(clock.fastTrackPerHour(550));
     }
 }

@@ -15,7 +15,6 @@ public class EntryPoint extends Thread {
 
     private static AtomicInteger totalCarsGenerated = new AtomicInteger(0);
 
-    
     public EntryPoint(String name, int entryRate, Road road, Clock clock) {
         this.name = name;
         this.entryRate = entryRate;
@@ -25,8 +24,7 @@ public class EntryPoint extends Thread {
         this.clock = clock;
     }
 
-    public static int getCarsGenerated()
-    {
+    public static int getCarsGenerated() {
         return totalCarsGenerated.get();
     }
 
@@ -35,26 +33,24 @@ public class EntryPoint extends Thread {
             try {
                 // sleep(clock.fastTrackPerHour(entryRate));
                 Thread.sleep(1000);
-            } catch (InterruptedException e)
-            {
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
             String destination = generateRandomDestination();
-            // Create a new car and add it to the road
             long time = System.nanoTime();
             if (!road.isRoadFull()) {
                 Car car = new Car(destination, time);
-                // System.out.println("The car has been generated at EntryPoint with destination " + car.getDestination() );
+                // System.out.println("The car has been generated at EntryPoint with destination
+                // " + car.getDestination() );
                 road.addCar(car);
                 // incrementCounter();
                 totalCarsGenerated.incrementAndGet();
             }
         }
     }
-    
-    public synchronized void incrementCounter()
-    {
+
+    public synchronized void incrementCounter() {
         carsGeneratedCounter++;
     }
 
