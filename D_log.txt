@@ -1,8 +1,4 @@
-Time: 0m30s - Junction D: 0 cars through from North, 0 cars waiting.
+Time: 0m30s - Junction D: 1 cars through from North, 0 cars waiting.
 Time: 1m0s - Junction D: 0 cars through from North, 0 cars waiting.
 Time: 1m30s - Junction D: 1 cars through from North, 0 cars waiting.
 Time: 2m0s - Junction D: 0 cars through from North, 0 cars waiting.
-Time: 2m30s - Junction D: 0 cars through from North, 0 cars waiting.
-Time: 3m0s - Junction D: 0 cars through from North, 0 cars waiting.
-Time: 3m30s - Junction D: 1 cars through from North, 0 cars waiting.
-Time: 4m0s - Junction D: 1 cars through from North, 0 cars waiting.

@@ -1,9 +1,15 @@
 // import java.io.IOException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class CarPark extends Thread {
+    private static final List<CarPark> carParks = new ArrayList<>();
+
     private String name;
     private int capacity;
     private Road road;
@@ -26,6 +32,8 @@ public class CarPark extends Thread {
         this.carsParked = 0;
         this.totalJourneyTime = 0;
         this.clock = clock;
+
+        carParks.add(this);
     }
 
     public void run() {
@@ -39,6 +47,22 @@ public class CarPark extends Thread {
 
             // Removing the car from the road
             admitCarFromRoad();
+
+            // // Check if the current tick is a multiple of 6
+            // if (clock.getTick() % 6 == 0) {
+            // // reportParkingSpaces();
+            // System.out.println(clock.getTick());
+            // }
+        }
+    }
+
+    public static List<CarPark> getCarParks() {
+        return carParks;
+    }
+
+    public synchronized static void reportAllParkingSpaces() {
+        for (CarPark carPark : carParks) {
+            carPark.reportParkingSpaces();
         }
     }
 
@@ -47,29 +71,23 @@ public class CarPark extends Thread {
             if (!road.isRoadEmpty()) {
                 Car car = road.removeCar();
                 if (car != null) {
-                carParkSpaces[occupiedSpaces++] = car;
-                car.parked(); // gives a car a timestamp
-                // System.out.println( name + " has been admitted with destination of " +
-                // car.getDestination() + " " + car.getJourneyTime());
+                    carParkSpaces[occupiedSpaces++] = car;
+                    car.parked(); // gives a car a timestamp
 
-                carsParked++;
-                // totalCarsParked++;
-                totalCarsParked.incrementAndGet();
-                totalJourneyTime += car.getJourneyTime();
+                    carsParked++;
+                    // totalCarsParked++;
+                    totalCarsParked.incrementAndGet();
+                    totalJourneyTime += car.getJourneyTime();
                 }
             }
         }
     }
 
-    // public static int getTotalCarsParked() {
-    // return totalCarsParked;
-    // }
-
     public static int getTotalCarsParked() {
         return totalCarsParked.get();
     }
 
-    private void reportParkingSpaces() {
+    public void reportParkingSpaces() {
         int availableSpaces = capacity - occupiedSpaces;
         System.out.println("Time: " + clock.getCurrentMinutes() + "m               " + name + ":                     "
                 + String.format("%03d", availableSpaces) + " Spaces");
@@ -89,31 +107,7 @@ public class CarPark extends Thread {
         int elapsedSeconds = (int) averageJourneyTime;
         int elapsedMinutes = elapsedSeconds / 60;
 
-        // System.out.println( occupiedSpaces + " " + carsParked );
-
-        // int i = 0;
-        // for (Car car : carParkSpaces)
-        // {
-        // if (car != null)
-        // {
-        // i++;
-        // }
-        // }
-
-        // System.out.println(i);
         System.out.println(name + " " + occupiedSpaces + " Cars parked, average journey time " + elapsedMinutes + "m"
                 + elapsedSeconds + "s");
-
-        // synchronized (this) {
-        // long averageJourneyTime = (carsParked == 0) ? 0 : totalJourneyTime /
-        // carsParked;
-
-        // int elapsedSeconds = (int) averageJourneyTime;
-        // int elapsedMinutes = elapsedSeconds / 60;
-
-        // System.out.println(name + " " + occupiedSpaces + " Cars parked, average
-        // journey time " +
-        // String.format("%dm%ds", elapsedMinutes, elapsedSeconds));
-        // }
     }
 }

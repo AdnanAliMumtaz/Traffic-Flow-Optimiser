@@ -33,17 +33,21 @@ class Clock extends Thread {
                 e.printStackTrace();
                 Thread.currentThread().interrupt();
             }
+
+             // Check if the current tick is a multiple of 6
+             if (getTick() % 6 == 0) {
+                // reportParkingSpaces();
+                CarPark.reportAllParkingSpaces();
+
+                // System.out.println(getTick());
+            }
+
         }
     }
 
     public synchronized long getCurrentTime() {
         long currentTimeInMilliseconds = TimeUnit.NANOSECONDS.toMillis(currentTime);
         return currentTimeInMilliseconds;
-
-        // long currentTimeInSeconds = TimeUnit.NANOSECONDS.toSeconds(currentTime);
-        // return currentTimeInSeconds;
-
-        // return currentTime;
     }
 
     public synchronized long fastTrackPerHour(int originalRate) {
@@ -67,14 +71,7 @@ class Clock extends Thread {
 
     public boolean getRunningTime()
     {
-        // TimeUnit.NANOSECONDS.toMillis(currentTime);
-        // return getCurrentTime() < TimeUnit.NANOSECONDS.toSeconds(runDuration);
         return getCurrentTime() < TimeUnit.NANOSECONDS.toMillis(runDuration);
-
-        // long currentTimeMillis = getCurrentTime();
-        // long timePassedMillis = TimeUnit.SECONDS.toMillis(runDuration);
-        
-        // return currentTimeMillis < timePassedMillis;
     }
 
     public boolean getRunningTicks()
@@ -82,7 +79,6 @@ class Clock extends Thread {
         int currentTime = (int) TimeUnit.MILLISECONDS.toSeconds(getCurrentTime());
         int timePassed = (int) TimeUnit.NANOSECONDS.toSeconds(runDuration);
 
-        // int ticks = (int) getCurrentTime() < TimeUnit.NANOSECONDS.toMillis(runDuration));
         return currentTime < timePassed;
     }
 
@@ -104,7 +100,6 @@ class Clock extends Thread {
         int seconds = (int) ((elapsedMinutes - minutes) * 60);
 
         System.out.println("Desired Simulated Time: " + TimeUnit.NANOSECONDS.toSeconds(runDuration) + " seconds");
-
         System.out.println("Actual Elapsed Time: " + minutes + " minutes " + seconds + " seconds");
     }
 
@@ -115,11 +110,15 @@ class Clock extends Thread {
 
         // Extract minutes and seconds
         int minutes = (int) elapsedMinutes;
-        // int seconds = (int) ((elapsedMinutes - minutes) * 60);
-
-        // System.out.println("Actual Elapsed Time: " + minutes + " minutes " + seconds + " seconds");
-
         return minutes;
+    }
+
+    public void getReportingOnSpaces(CarPark[] destination)
+    {
+        for (CarPark des : destination)
+        {
+            des.reportParkingSpaces();
+        }
     }
 
     public synchronized int getCurrentSeconds()

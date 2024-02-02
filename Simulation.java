@@ -8,7 +8,7 @@ import java.sql.Time;
 import java.util.Date;
 import java.util.HashMap;
 
-public class Main {
+public class Simulation {
     public static void main(String[] arg) {
         // Reading files
         Configuration config = new Configuration("Task 1 Scenarios/Scenario1.txt");
@@ -19,7 +19,7 @@ public class Main {
 
         // Main Simulation begins here...
         Clock clock = new Clock(TimeUnit.SECONDS.toNanos(1));
-        clock.setRunDuration(TimeUnit.SECONDS.toNanos(24));
+        clock.setRunDuration(TimeUnit.SECONDS.toNanos(12));
         // clock.setRunDuration(TimeUnit.MINUTES.toNanos(1));
 
         // Junction Roads - A
@@ -79,10 +79,13 @@ public class Main {
         junctionD.setExit("South", southStation);
 
         // CarParks - Destination
-        CarPark IndustrialPark = new CarPark("IndustrialPark", 1000, westIndustrialPark, clock);
-        CarPark ShoppingCentre = new CarPark("ShoppingCentre", 400, westShoppingCentre, clock);
+        CarPark IndustrialPark = new CarPark("IndustrialPark", 100, westIndustrialPark, clock);
+        CarPark ShoppingCentre = new CarPark("ShoppingCentre", 100, westShoppingCentre, clock);
         CarPark University = new CarPark("University", 100, northUniversity, clock);
-        CarPark Station = new CarPark("Station", northRate, southStation, clock);
+        CarPark Station = new CarPark("Station", 100, southStation, clock);
+
+
+        // clock.getReportingOnSpaces(new CarPark[]{IndustrialPark, ShoppingCentre, University, Station});
 
         // Start threads
         clock.start();
@@ -120,6 +123,10 @@ public class Main {
         ShoppingCentre.report();
         University.report();
         Station.report();
+
+
+        // CarPark.reportAllParkingSpaces();
+
 
         System.out.println("\n");
         System.out.println("Total Number of Cars Created: " + EntryPoint.getCarsGenerated());
