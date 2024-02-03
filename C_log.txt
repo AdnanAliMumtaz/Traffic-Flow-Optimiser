@@ -1,4 +1,4 @@
-Time: 0m30s - Junction C: 2 cars through from North, 0 cars waiting.
-Time: 1m0s - Junction C: 3 cars through from South, 0 cars waiting.
-Time: 1m30s - Junction C: 6 cars through from North, 1 cars waiting. GRIDLOCK
-Time: 2m0s - Junction C: 6 cars through from South, 2 cars waiting.
+Time: 0m30s - Junction C: 4 cars through from North, 0 cars waiting.
+Time: 1m0s - Junction C: 4 cars through from South, 0 cars waiting.
+Time: 1m30s - Junction C: 6 cars through from North, 3 cars waiting. GRIDLOCK
+Time: 2m0s - Junction C: 6 cars through from South, 0 cars waiting.

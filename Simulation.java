@@ -1,50 +1,48 @@
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
-import javax.imageio.stream.IIOByteBuffer;
-import javax.swing.RowFilter.Entry;
 import java.util.Map;
-import java.security.InvalidKeyException;
-import java.sql.Time;
-import java.util.Date;
-import java.util.HashMap;
 
 public class Simulation {
     public static void main(String[] arg) {
+
+        //Asking for the input
+
+
         // Reading files
         Configuration config = new Configuration("Task 1 Scenarios/Scenario1.txt");
-        Map<String, Integer> entryPoints = config.getEntryPoints();
-        Map<String, Integer> junctions = config.getJunctions();
-        int southRate = entryPoints.get("south");
-        int northRate = entryPoints.get("north");
+
+        //Reading Files Configuration
+        int southRate = config.getEntryPointRate("South");
+        int eastRate = config.getEntryPointRate("East");
+        int northRate = config.getEntryPointRate("North"); 
 
         // Main Simulation begins here...
         Clock clock = new Clock(TimeUnit.SECONDS.toNanos(1));
         clock.setRunDuration(TimeUnit.SECONDS.toNanos(12));
-        // clock.setRunDuration(TimeUnit.MINUTES.toNanos(1));
+        // clock.setRunDuration(TimeUnit.MINUTES.toNanos(6));
 
         // Junction Roads - A
-        Road southEntryA = new Road(6);
+        Road southEntryA = new Road(60);
         Road westIndustrialPark = new Road(15);
-        Road northA = new Road(2);
+        Road northA = new Road(7);
 
         // Junction Roads - B
-        Road southB = new Road(5);
-        Road eastEntryB = new Road(5);
-        Road northB = new Road(5);
+        Road southB = new Road(7);
+        Road eastEntryB = new Road(30);
+        Road northB = new Road(10);
 
         // Junction Roads - C
-        Road northEntryC = new Road(5);
+        Road northEntryC = new Road(50);
         Road westShoppingCentre = new Road(7);
-        Road southC = new Road(4);
+        Road southC = new Road(10);
 
         // Junction Roads - D
-        Road northD = new Road(4);
-        Road northUniversity = new Road(5);
-        Road southStation = new Road(6);
+        Road northD = new Road(10);
+        Road northUniversity = new Road(15);
+        Road southStation = new Road(15);
 
         // Entry Points
         EntryPoint southEntry = new EntryPoint("South", southRate, southEntryA, clock);
-        EntryPoint eastEntry = new EntryPoint("East", northRate, eastEntryB, clock);
+        EntryPoint eastEntry = new EntryPoint("East", eastRate, eastEntryB, clock);
         EntryPoint northEntry = new EntryPoint("North", northRate, northEntryC, clock);
 
         // Junctions
@@ -52,6 +50,7 @@ public class Simulation {
         Junction junctionA = new Junction("A", 60, clock, sequenceA);
         junctionA.setEntry("South", southEntryA);
         junctionA.setEntry("North", northA);
+
         junctionA.setExit("West", westIndustrialPark);
         junctionA.setExit("North", southB);
 
@@ -60,8 +59,9 @@ public class Simulation {
         junctionB.setEntry("South", southB);
         junctionB.setEntry("East", eastEntryB);
         junctionB.setEntry("North", northB);
-        junctionB.setExit("North", northA);
-        junctionB.setExit("South", southC);
+
+        junctionB.setExit("South", northA);
+        junctionB.setExit("North", southC);
 
         String[] sequenceC = {"North", "South"};
         Junction junctionC = new Junction("C", 30, clock, sequenceC);
@@ -75,14 +75,15 @@ public class Simulation {
         String[] sequenceD = {"North"};
         Junction junctionD = new Junction("D", 30, clock, sequenceD);
         junctionD.setEntry("North", northD);
+
         junctionD.setExit("North", northUniversity);
         junctionD.setExit("South", southStation);
 
         // CarParks - Destination
-        CarPark IndustrialPark = new CarPark("IndustrialPark", 100, westIndustrialPark, clock);
-        CarPark ShoppingCentre = new CarPark("ShoppingCentre", 100, westShoppingCentre, clock);
+        CarPark IndustrialPark = new CarPark("IndustrialPark", 1000, westIndustrialPark, clock);
+        CarPark ShoppingCentre = new CarPark("ShoppingCentre", 400, westShoppingCentre, clock);
         CarPark University = new CarPark("University", 100, northUniversity, clock);
-        CarPark Station = new CarPark("Station", 100, southStation, clock);
+        CarPark Station = new CarPark("Station", 150, southStation, clock);
 
 
         // clock.getReportingOnSpaces(new CarPark[]{IndustrialPark, ShoppingCentre, University, Station});
@@ -126,7 +127,6 @@ public class Simulation {
 
 
         // CarPark.reportAllParkingSpaces();
-
 
         System.out.println("\n");
         System.out.println("Total Number of Cars Created: " + EntryPoint.getCarsGenerated());

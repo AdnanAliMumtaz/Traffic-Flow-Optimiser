@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
+import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -37,6 +39,13 @@ public class Junction extends Thread {
 
         // Initialise logger
         this.logger = Logger.getLogger(Junction.class.getName() + "." + junctionName);
+
+        Logger rootLogger = Logger.getLogger("");
+        Handler[] handlers = rootLogger.getHandlers();
+        for (Handler handler : handlers) {
+            rootLogger.removeHandler(handler);
+        }
+
         try {
             FileHandler fileHandler = new FileHandler(junctionName + "_log.txt", false);
             fileHandler.setFormatter(new CustomFormatter());
@@ -44,6 +53,15 @@ public class Junction extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        // this.logger = Logger.getLogger(Junction.class.getName() + "." + junctionName);
+        // try {
+        //     FileHandler fileHandler = new FileHandler(junctionName + "_log.txt", false);
+        //     fileHandler.setFormatter(new CustomFormatter());
+        //     logger.addHandler(fileHandler);
+        // } catch (IOException e) {
+        //     e.printStackTrace();
+        // }
     }
 
     private static class CustomFormatter extends SimpleFormatter {
@@ -69,7 +87,6 @@ public class Junction extends Thread {
 
     private void CarMovement() {
         for (String value : sequence) {
-
             if (!clock.getRunningTicks()) {
                 break;
             }
@@ -99,6 +116,7 @@ public class Junction extends Thread {
             logActivity(value, islocked);
 
             carCounting = 0;
+            // System.out.println(junctionName + " from " + value + " for " + end);
         }
     }
 
@@ -152,6 +170,7 @@ public class Junction extends Thread {
         } else if ("B" == junctionName) {
             if ("IndustrialPark" == destination) {
                 return exits.get("South");
+                // return exits.get("North");
             } else {
                 return exits.get("North");
             }

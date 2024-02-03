@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-// import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -55,6 +54,12 @@ public class Configuration {
             exception.printStackTrace();
         }
     }
+
+    
+    public int getEntryPointRate(String entryPoint) {
+        return entryPointsRates.getOrDefault(entryPoint.toLowerCase(), 0);
+    }
+
 
     public Map<String, Integer> getEntryPoints()
     {

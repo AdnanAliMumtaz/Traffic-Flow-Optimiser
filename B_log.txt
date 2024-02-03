@@ -1,2 +1,2 @@
-Time: 1m0s - Junction B: 5 cars through from South, 0 cars waiting.
-Time: 2m0s - Junction B: 12 cars through from East, 5 cars waiting.
+Time: 1m0s - Junction B: 4 cars through from South, 0 cars waiting.
+Time: 2m0s - Junction B: 9 cars through from East, 0 cars waiting.
