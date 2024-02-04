@@ -17,8 +17,8 @@ public class Simulation {
 
         // Main Simulation begins here...
         Clock clock = new Clock(TimeUnit.SECONDS.toNanos(1));
-        clock.setRunDuration(TimeUnit.SECONDS.toNanos(12));
-        // clock.setRunDuration(TimeUnit.MINUTES.toNanos(6));
+        // clock.setRunDuration(TimeUnit.SECONDS.toNanos(12));
+        clock.setRunDuration(TimeUnit.MINUTES.toNanos(1));
 
         // Junction Roads - A
         Road southEntryA = new Road(60);
@@ -54,7 +54,7 @@ public class Simulation {
         junctionA.setExit("West", westIndustrialPark);
         junctionA.setExit("North", southB);
 
-        String[] sequenceB = { "South", "East", "North"};
+        String[] sequenceB = {"North", "East","South"};
         Junction junctionB = new Junction("B", 60, clock, sequenceB);
         junctionB.setEntry("South", southB);
         junctionB.setEntry("East", eastEntryB);
@@ -63,7 +63,7 @@ public class Simulation {
         junctionB.setExit("South", northA);
         junctionB.setExit("North", southC);
 
-        String[] sequenceC = {"North", "South"};
+        String[] sequenceC = {"South", "North"};
         Junction junctionC = new Junction("C", 30, clock, sequenceC);
         junctionC.setEntry("North", northEntryC);
         junctionC.setEntry("South", southC);

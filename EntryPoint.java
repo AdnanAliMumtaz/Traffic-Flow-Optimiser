@@ -37,7 +37,7 @@ public class EntryPoint extends Thread {
 
             String destination = generateRandomDestination();
             long time = System.nanoTime();
-            // Car car = new Car(destination, time);
+            
             if (!road.isRoadFull()) {
                 Car car = new Car(destination, time);
                 road.addCar(car);
@@ -71,8 +71,4 @@ public class EntryPoint extends Thread {
 
         return finalDestination;
     }
-
-    // public String getEntryPointName() {
-    //     return name;
-    // }
 }

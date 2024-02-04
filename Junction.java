@@ -134,13 +134,12 @@ public class Junction extends Thread {
 
     private boolean passCar(Road road, String car) {
         Road exitRoad = getExitRoadForDestination(car);
-        // if (exitRoad != null && !exitRoad.isRoadFull()) {
-        if (!exitRoad.isRoadFull()) {
+        if (exitRoad != null && !exitRoad.isRoadFull()) {
             Car carAdd = road.removeCar();
             exitRoad.addCar(carAdd);
-            return true;
-        } else { // if road is full
             return false;
+        } else { // if road is full
+            return true;
         }
     }
 

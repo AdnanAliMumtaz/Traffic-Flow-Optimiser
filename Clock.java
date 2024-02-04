@@ -36,9 +36,9 @@ class Clock extends Thread {
             }
 
             // Check if the current tick is a multiple of 6
-            // if (getTick() % 60 == 0) {
-            //     CarPark.reportAllParkingSpaces();
-            // }
+            if (getTick() % 60 == 0) {
+                CarPark.reportAllParkingSpaces();
+            }
 
         }
     }
