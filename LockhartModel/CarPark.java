@@ -1,3 +1,4 @@
+package LockhartModel;
 // import java.io.IOException;
 
 import java.util.ArrayList;
@@ -89,7 +90,7 @@ public class CarPark extends Thread {
 
     public void reportParkingSpaces() {
         int availableSpaces = capacity - occupiedSpaces;
-        System.out.println("Time: " + clock.getCurrentMinutes() + "m               " + name + ":                     "
+        System.out.println(name + ":                     "
                 + String.format("%03d", availableSpaces) + " Spaces");
     }
 

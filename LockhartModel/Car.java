@@ -1,3 +1,4 @@
+package LockhartModel;
 
 public class Car {
     private String destinations;

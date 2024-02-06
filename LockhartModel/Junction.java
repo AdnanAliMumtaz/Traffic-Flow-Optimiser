@@ -1,12 +1,9 @@
-import java.nio.channels.ClosedChannelException;
+package LockhartModel;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
-import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
@@ -22,8 +19,10 @@ public class Junction extends Thread {
     private Map<String, Road> entries;
     private Map<String, Road> exits;
     private Logger logger;
-
     private String[] sequence;
+    private Lock lock;
+
+
 
     public Junction(String name, int greenTime, Clock clock, String[] sequence) {
         this.junctionName = name;
@@ -36,25 +35,28 @@ public class Junction extends Thread {
         this.exits = new HashMap<>();
 
         this.sequence = sequence;
+        this.lock = new ReentrantLock();
 
         // Initialise logger
         this.logger = Logger.getLogger(Junction.class.getName() + "." + junctionName);
-
+        
         Logger rootLogger = Logger.getLogger("");
         Handler[] handlers = rootLogger.getHandlers();
+        
         for (Handler handler : handlers) {
             rootLogger.removeHandler(handler);
         }
 
         try {
-            FileHandler fileHandler = new FileHandler(junctionName + "_log.txt", false);
+            String packageName = getClass().getPackage().getName();
+            String filePath = packageName.replace(".", "/") + "/" + junctionName + "_log.txt";
+            FileHandler fileHandler = new FileHandler(filePath, false);
             fileHandler.setFormatter(new CustomFormatter());
             logger.addHandler(fileHandler);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        // this.logger = Logger.getLogger(Junction.class.getName() + "." + junctionName);
         // try {
         //     FileHandler fileHandler = new FileHandler(junctionName + "_log.txt", false);
         //     fileHandler.setFormatter(new CustomFormatter());
@@ -81,7 +83,16 @@ public class Junction extends Thread {
 
     public void run() {
         while (clock.getRunningTicks()) {
-            CarMovement();
+
+            lock.lock();
+            try {
+                CarMovement();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                lock.unlock();
+            }
+            // CarMovement();
         }
     }
 
@@ -120,7 +131,7 @@ public class Junction extends Thread {
         }
     }
 
-    private synchronized void logActivity(String direction, boolean isLocked) {
+    private void logActivity(String direction, boolean isLocked) {
         String logMessage = "Time: " + clock.getCurrentMinutes() + "m" + clock.getCurrentSeconds() + "s - Junction "
                 + junctionName + ": " + carCounting + " cars through from " + direction + ", " + this.carsRemaining
                 + " cars waiting.";

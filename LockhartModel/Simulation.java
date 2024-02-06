@@ -1,24 +1,24 @@
+package LockhartModel;
 import java.util.concurrent.TimeUnit;
 import java.util.Map;
 
 public class Simulation {
     public static void main(String[] arg) {
-
-        //Asking for the input
-
-
         // Reading files
-        Configuration config = new Configuration("Task 1 Scenarios/Scenario1.txt");
+        Configuration fileData = new Configuration("LockhartModel/Task 1 Scenarios/Scenario1.txt");
+        int southRate = fileData.getEntryPointRate("South");
+        int eastRate = fileData.getEntryPointRate("East");
+        int northRate = fileData.getEntryPointRate("North"); 
 
-        //Reading Files Configuration
-        int southRate = config.getEntryPointRate("South");
-        int eastRate = config.getEntryPointRate("East");
-        int northRate = config.getEntryPointRate("North"); 
+        int junctionAGreenLight = fileData.getJunctionLightTime("A");
+        int junctionBGreenLight = fileData.getJunctionLightTime("B");
+        int junctionCGreenLight = fileData.getJunctionLightTime("C");
+        int junctionDGreenLight = fileData.getJunctionLightTime("D");
 
         // Main Simulation begins here...
         Clock clock = new Clock(TimeUnit.SECONDS.toNanos(1));
         // clock.setRunDuration(TimeUnit.SECONDS.toNanos(12));
-        clock.setRunDuration(TimeUnit.MINUTES.toNanos(1));
+        clock.setRunDuration(TimeUnit.MINUTES.toNanos(6));
 
         // Junction Roads - A
         Road southEntryA = new Road(60);
@@ -47,46 +47,39 @@ public class Simulation {
 
         // Junctions
         String[] sequenceA = { "South", "North" };
-        Junction junctionA = new Junction("A", 60, clock, sequenceA);
+        Junction junctionA = new Junction("A", junctionAGreenLight, clock, sequenceA);
         junctionA.setEntry("South", southEntryA);
         junctionA.setEntry("North", northA);
-
         junctionA.setExit("West", westIndustrialPark);
         junctionA.setExit("North", southB);
 
         String[] sequenceB = {"North", "East","South"};
-        Junction junctionB = new Junction("B", 60, clock, sequenceB);
+        Junction junctionB = new Junction("B", junctionBGreenLight, clock, sequenceB);
         junctionB.setEntry("South", southB);
         junctionB.setEntry("East", eastEntryB);
         junctionB.setEntry("North", northB);
-
         junctionB.setExit("South", northA);
         junctionB.setExit("North", southC);
 
         String[] sequenceC = {"South", "North"};
-        Junction junctionC = new Junction("C", 30, clock, sequenceC);
+        Junction junctionC = new Junction("C", junctionCGreenLight, clock, sequenceC);
         junctionC.setEntry("North", northEntryC);
         junctionC.setEntry("South", southC);
-
         junctionC.setExit("West", westShoppingCentre);
         junctionC.setExit("South", southB);
         junctionC.setExit("North", northD);
 
         String[] sequenceD = {"North"};
-        Junction junctionD = new Junction("D", 30, clock, sequenceD);
+        Junction junctionD = new Junction("D", junctionDGreenLight, clock, sequenceD);
         junctionD.setEntry("North", northD);
-
         junctionD.setExit("North", northUniversity);
         junctionD.setExit("South", southStation);
 
-        // CarParks - Destination
+        // CarParks
         CarPark IndustrialPark = new CarPark("IndustrialPark", 1000, westIndustrialPark, clock);
         CarPark ShoppingCentre = new CarPark("ShoppingCentre", 400, westShoppingCentre, clock);
         CarPark University = new CarPark("University", 100, northUniversity, clock);
         CarPark Station = new CarPark("Station", 150, southStation, clock);
-
-
-        // clock.getReportingOnSpaces(new CarPark[]{IndustrialPark, ShoppingCentre, University, Station});
 
         // Start threads
         clock.start();
@@ -125,9 +118,7 @@ public class Simulation {
         University.report();
         Station.report();
 
-
-        // CarPark.reportAllParkingSpaces();
-
+        //Final Output
         System.out.println("\n");
         System.out.println("Total Number of Cars Created: " + EntryPoint.getCarsGenerated());
         System.out.println("Total Number of Cars Atomic Queued: " + Road.getTotalCarsQueued());

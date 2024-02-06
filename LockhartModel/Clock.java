@@ -1,3 +1,4 @@
+package LockhartModel;
 import java.sql.Time;
 import java.util.concurrent.TimeUnit;
 
@@ -37,7 +38,9 @@ class Clock extends Thread {
 
             // Check if the current tick is a multiple of 6
             if (getTick() % 60 == 0) {
+                System.out.println("Time: " + getCurrentMinutes() + "m               ");
                 CarPark.reportAllParkingSpaces();
+                System.out.print("\n");
             }
 
         }
@@ -50,22 +53,6 @@ class Clock extends Thread {
 
     public synchronized long fastTrackPerHour(int originalRate) {
         return 3600000 / (originalRate * 10);
-
-
-
-        // // Given values
-        // int totalCars = originalRate;
-        // int totalMinutes = 6;
-
-        // // Calculate cars per minute
-        // double carsPerMinute = (double) totalCars / totalMinutes;
-
-        // // Calculate cars per second
-        // double carsPerSecond = carsPerMinute / 60;
-
-        // // Calculate sleep duration in milliseconds
-        // long sleepDurationMillis = (long) (1 / carsPerSecond * 1000);
-        // return sleepDurationMillis;
     }
 
     public synchronized long fastTrackPerSeconds(long value) {

@@ -1,3 +1,4 @@
+package LockhartModel;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -54,35 +55,13 @@ public class Configuration {
             exception.printStackTrace();
         }
     }
-
     
     public int getEntryPointRate(String entryPoint) {
         return entryPointsRates.getOrDefault(entryPoint.toLowerCase(), 0);
     }
 
-
-    public Map<String, Integer> getEntryPoints()
+    public int getJunctionLightTime(String junction)
     {
-        return entryPointsRates;
-    }
-
-    public Map<String, Integer> getJunctions()
-    {
-        return junctionGreenTimes;
-    }
-
-    public void output()
-    {
-        System.out.println("EntryPoints");
-        for (Map.Entry<String, Integer> entry: entryPointsRates.entrySet())
-        {
-            System.out.println(entry.getKey() + ": " + entry.getValue());
-        }
-
-        System.out.println("\nJUNCTIONS");
-        for (Map.Entry<String, Integer> entry: junctionGreenTimes.entrySet())
-        {
-            System.out.println(entry.getKey() + ": " + entry.getValue());
-        }
+        return junctionGreenTimes.getOrDefault(junction.toUpperCase(), 0);   
     }
 }

@@ -1,3 +1,4 @@
+package LockhartModel;
 
 // import java.io.IOException;
 import java.util.Random;
