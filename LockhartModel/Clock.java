@@ -1,36 +1,38 @@
 package LockhartModel;
+
 import java.sql.Time;
 import java.util.concurrent.TimeUnit;
 
 class Clock extends Thread {
     private long currentTime;
-    private final long tickDuration;
+    // private final long tickDuration;
     private volatile boolean running;
-    private long runDuration; // New variable to store the desired run duration
+    private int runDuration; // New variable to store the desired run duration
     private int ticks;
-
-    public Clock(long tickDuration) {
-        this.tickDuration = tickDuration;
+    
+    public Clock() {
+        // this.tickDuration = tickDuration;
         this.currentTime = 0;
         this.running = true;
-        this.runDuration = 0;
+        // this.runDuration = 0;
         this.ticks = 0;
     }
 
-    public synchronized void setRunDuration(long runDuration) {
-        this.runDuration = runDuration;
+    public void setRunDurationInMinutest(int runDuration) {
+        this.runDuration = runDuration * 60;
     }
 
     @Override
     public void run() {
-        long startTime = System.nanoTime();
+        // long startTime = System.nanoTime();
 
-        while (running && currentTime < runDuration) {
+        // while (running && currentTime < runDuration) {
+        while (ticks < runDuration) {
             try {
-                // TimeUnit.NANOSECONDS.sleep(1000000000); // Sleep for 1 second (nano
-                // granularity)
+                // TimeUnit.NANOSECONDS.sleep(1000000000); // Sleep for 1 second (nano granularity)
                 Thread.sleep(1000); // Sleep for 1 second
-                currentTime = System.nanoTime() - startTime; // Increment simulated time
+                this.ticks++;
+                // currentTime = System.nanoTime() - startTime; // Increment simulated time
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 Thread.currentThread().interrupt();
@@ -38,7 +40,7 @@ class Clock extends Thread {
 
             // Check if the current tick is a multiple of 6
             if (getTick() % 60 == 0) {
-                System.out.println("Time: " + getCurrentMinutes() + "m               ");
+                System.out.print("Time: " + getCurrentMinutes() + "m               ");
                 CarPark.reportAllParkingSpaces();
                 System.out.print("\n");
             }
@@ -56,7 +58,6 @@ class Clock extends Thread {
     }
 
     public synchronized long fastTrackPerSeconds(long value) {
-
         // Chaning the Code
         long t = TimeUnit.SECONDS.toMillis((long) (value * 0.1));
         long result = t * 1000;
@@ -69,64 +70,38 @@ class Clock extends Thread {
         return sleepDuration;
     }
 
-    public boolean getRunningTime() {
-        return getCurrentTime() < TimeUnit.NANOSECONDS.toMillis(runDuration);
-    }
+    public synchronized boolean getRunningTicks() {
+        // int currentTime = (int) TimeUnit.MILLISECONDS.toSeconds(getCurrentTime());
+        // int timePassed = (int) TimeUnit.NANOSECONDS.toSeconds(runDuration);
+        // return currentTime < timePassed;
 
-    public boolean getRunningTicks() {
-        int currentTime = (int) TimeUnit.MILLISECONDS.toSeconds(getCurrentTime());
-        int timePassed = (int) TimeUnit.NANOSECONDS.toSeconds(runDuration);
-
-        return currentTime < timePassed;
+        // return ticks < 360; // 6 minutes
+        return ticks < runDuration;
     }
 
     public synchronized int getTick() {
-        ticks = (int) TimeUnit.MILLISECONDS.toSeconds(getCurrentTime());
+        // ticks = (int) TimeUnit.MILLISECONDS.toSeconds(getCurrentTime());
         return ticks;
     }
 
-    public synchronized void stopThread() {
-        running = false;
-    }
-
-    public synchronized void outputElapsedTime() {
-        double elapsedSeconds = TimeUnit.NANOSECONDS.toSeconds(currentTime);
-        double elapsedMinutes = elapsedSeconds / 6;
-
-        // Extract minutes and seconds
-        int minutes = (int) elapsedMinutes;
-        int seconds = (int) ((elapsedMinutes - minutes) * 60);
-
-        System.out.println("Desired Simulated Time: " + TimeUnit.NANOSECONDS.toSeconds(runDuration) + " seconds");
-        System.out.println("Actual Elapsed Time: " + minutes + " minutes " + seconds + " seconds");
-    }
-
     public synchronized int getCurrentMinutes() {
-        double elapsedSeconds = TimeUnit.NANOSECONDS.toSeconds(currentTime);
-        double elapsedMinutes = elapsedSeconds / 6;
+        // double elapsedSeconds = TimeUnit.NANOSECONDS.toSeconds(currentTime);
+        // double elapsedMinutes = elapsedSeconds / 6;
 
-        // Extract minutes and seconds
-        int minutes = (int) elapsedMinutes;
-        return minutes;
+        // // Extract minutes and seconds
+        // int minutes = (int) elapsedMinutes;
+        // return minutes;
+
+        return (int) getTick() / 6; // 6 second is one minute
     }
 
-    public void getReportingOnSpaces(CarPark[] destination) {
-        for (CarPark des : destination) {
-            des.reportParkingSpaces();
-        }
-    }
+    public int getCurrentSeconds() {
+        int currentTick = (int) getTick(); // Each tick is 10 seconds
 
-    public synchronized int getCurrentSeconds() {
-        double elapsedSeconds = TimeUnit.NANOSECONDS.toSeconds(currentTime);
-        double elapsedMinutes = elapsedSeconds / 6;
+        int currentMinute = currentTick / 6; // One minute
+        // int currentSeconds = ;
+        int currentSeconds = (currentTick % 6) * 10; // Calculate seconds within the current minute
 
-        // Extract minutes and seconds
-        int minutes = (int) elapsedMinutes;
-        int seconds = (int) ((elapsedMinutes - minutes) * 60);
-
-        // System.out.println("Actual Elapsed Time: " + minutes + " minutes " + seconds
-        // + " seconds");
-
-        return seconds;
+        return currentSeconds;
     }
 }

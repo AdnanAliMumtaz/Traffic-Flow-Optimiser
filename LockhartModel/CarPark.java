@@ -90,8 +90,8 @@ public class CarPark extends Thread {
 
     public void reportParkingSpaces() {
         int availableSpaces = capacity - occupiedSpaces;
-        System.out.println(name + ":                     "
-                + String.format("%03d", availableSpaces) + " Spaces");
+        System.out.print(name + ":                     "
+                + String.format("%03d", availableSpaces) + " Spaces \n");
     }
 
     public synchronized boolean isCarParkFull() {

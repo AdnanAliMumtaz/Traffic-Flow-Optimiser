@@ -22,8 +22,6 @@ public class Junction extends Thread {
     private String[] sequence;
     private Lock lock;
 
-
-
     public Junction(String name, int greenTime, Clock clock, String[] sequence) {
         this.junctionName = name;
         this.greenLightTime = greenTime;
@@ -39,10 +37,10 @@ public class Junction extends Thread {
 
         // Initialise logger
         this.logger = Logger.getLogger(Junction.class.getName() + "." + junctionName);
-        
+
         Logger rootLogger = Logger.getLogger("");
         Handler[] handlers = rootLogger.getHandlers();
-        
+
         for (Handler handler : handlers) {
             rootLogger.removeHandler(handler);
         }
@@ -56,14 +54,6 @@ public class Junction extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        // try {
-        //     FileHandler fileHandler = new FileHandler(junctionName + "_log.txt", false);
-        //     fileHandler.setFormatter(new CustomFormatter());
-        //     logger.addHandler(fileHandler);
-        // } catch (IOException e) {
-        //     e.printStackTrace();
-        // }
     }
 
     private static class CustomFormatter extends SimpleFormatter {
@@ -73,27 +63,38 @@ public class Junction extends Thread {
         }
     }
 
-    public synchronized void setEntry(String name, Road road) {
+    public void setEntry(String name, Road road) {
         entries.put(name, road);
     }
 
-    public synchronized void setExit(String name, Road road) {
+    public void setExit(String name, Road road) {
         exits.put(name, road);
     }
 
     public void run() {
         while (clock.getRunningTicks()) {
-
-            lock.lock();
-            try {
-                CarMovement();
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                lock.unlock();
-            }
+            CarMovement();
+            // lock.lock();
+            // try {
             // CarMovement();
+            // } catch (Exception e) {
+            // e.printStackTrace();
+            // } finally {
+            // lock.unlock();
+            // }
         }
+
+        // This doesn't work, produces the wrong results
+        // lock.lock();
+        // try {
+        // while (clock.getRunningTicks()) {
+        // CarMovement();
+        // }
+        // } catch (Exception e) {
+        // e.printStackTrace();
+        // } finally {
+        // lock.unlock();
+        // }
     }
 
     private void CarMovement() {
@@ -106,28 +107,45 @@ public class Junction extends Thread {
             int end = start + (greenLightTime / 10);
 
             Road entryRoad = entries.get(value);
-
             boolean islocked = false;
+
             while (clock.getTick() < end && clock.getRunningTicks()) // Green light for entry
             {
-                // // Operation
+                // Operation
                 if (!entryRoad.isRoadEmpty()) {
+                    String removedCar = entryRoad.peek().getDestination(); // Made this a synchornized
+                    islocked = passCar(entryRoad, removedCar);
+                    carCounting++;
+
                     try {
                         Thread.sleep(clock.fastTrackPerMinutes(12));
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-
-                    String removedCar = entryRoad.peek().getDestination();
-                    islocked = passCar(entryRoad, removedCar);
-                    carCounting++;
                 }
             }
-            this.carsRemaining = entryRoad.getCarsAmount();
+            // System.out.println("This is the time for e" + end);
+
+            // String logMessage = "Time: " + clock.getCurrentMinutes() + "m" +
+            // clock.getCurrentSeconds() + "s - Junction "
+            // + junctionName + ": " + carCounting + " cars through from " + value + ", " +
+            // this.carsRemaining
+            // + " cars waiting.";
+
+            // String logMessage = "Time: " + clock.getCurrentMinutes() + "m" +
+            // clock.getCurrentSeconds() + "s - Junction "
+            // + junctionName + ": " + carCounting + " cars through from " + value + ", This
+            // was the time for ending " + end + " with my current tick " + clock.getTick();
+
+            // if (this.carsRemaining > 0 && islocked) {
+            // logMessage += " GRIDLOCK";
+            // }
+            // logger.info(logMessage);
+
             logActivity(value, islocked);
+            this.carsRemaining = entryRoad.getCarsAmount();
 
             carCounting = 0;
-            // System.out.println(junctionName + " from " + value + " for " + end);
         }
     }
 
@@ -135,7 +153,6 @@ public class Junction extends Thread {
         String logMessage = "Time: " + clock.getCurrentMinutes() + "m" + clock.getCurrentSeconds() + "s - Junction "
                 + junctionName + ": " + carCounting + " cars through from " + direction + ", " + this.carsRemaining
                 + " cars waiting.";
-
         if (this.carsRemaining > 0 && isLocked) {
             logMessage += " GRIDLOCK";
         }
@@ -155,22 +172,6 @@ public class Junction extends Thread {
     }
 
     private Road getExitRoadForDestination(String destination) {
-        // if ("A" == junctionName) {
-        // if ("IndustrialPark" == destination) {
-        // return exits.get("West");
-        // } else {
-        // return exits.get("North");
-        // }
-        // } else if ("B" == junctionName) {
-        // if ("ShoppingCentre" == destination) {
-        // return exits.get("West");
-        // } else {
-        // return exits.get("North");
-        // }
-        // } else {
-        // return null;
-        // }
-
         if ("A" == junctionName) {
             if ("IndustrialPark" == destination) {
                 return exits.get("West");
@@ -202,4 +203,52 @@ public class Junction extends Thread {
             return null;
         }
     }
+
+    // private Road getExitRoadForDestination(String destination) {
+    // if (junctionName == null) {
+    // return null;
+    // }
+
+    // switch (junctionName) {
+    // case "A":
+    // return "IndustrialPark".equals(destination) ? exits.get("West") :
+    // exits.get("North");
+    // case "B":
+    // return "IndustrialPark".equals(destination) ? exits.get("South") :
+    // exits.get("North");
+    // case "C":
+    // if ("IndustrialPark".equals(destination)) {
+    // return exits.get("South");
+    // } else if ("ShoppingCentre".equals(destination)) {
+    // return exits.get("West");
+    // } else {
+    // return exits.get("North");
+    // }
+    // case "D":
+    // return "University".equals(destination) ? exits.get("North") :
+    // exits.get("South");
+    // default:
+    // return null;
+    // }
+    // }
+
+    // private Road getExitRoadForDestination(String destination) {
+    // switch (junctionName) {
+    // case "A":
+    // return ("IndustrialPark" == destination) ? exits.get("West") :
+    // exits.get("North");
+    // case "B":
+    // return ("IndustrialPark" == destination) ? exits.get("South") :
+    // exits.get("North");
+    // case "C":
+    // if ("IndustrialPark" == destination) return exits.get("South");
+    // else if ("ShoppingCentre" == destination) return exits.get("West");
+    // else return exits.get("North");
+    // case "D":
+    // return ("University" == destination) ? exits.get("North") :
+    // exits.get("South");
+    // default:
+    // return null;
+    // }
+    // }
 }

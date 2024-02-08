@@ -36,10 +36,11 @@ public class EntryPoint extends Thread {
                 e.printStackTrace();
             }
 
-            String destination = generateRandomDestination();
-            long time = System.nanoTime();
-            
+            // String destination = generateRandomDestination();
+            // long time = System.nanoTime();            
             if (!road.isRoadFull()) {
+                String destination = generateRandomDestination();
+                long time = System.nanoTime();         
                 Car car = new Car(destination, time);
                 road.addCar(car);
                 totalCarsGenerated.incrementAndGet();
