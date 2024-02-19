@@ -1,33 +1,25 @@
 package LockhartModel;
-// import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class CarPark extends Thread {
     private static final List<CarPark> carParks = new ArrayList<>();
-
     private String name;
     private int capacity;
-    private Road road;
+    private Road entryRoad;
     private Car[] carParkSpaces;
     private int occupiedSpaces;
     private int carsParked;
     private long totalJourneyTime;
     private Clock clock;
-
-    // private static int totalCarsParked = 0;
     private static AtomicInteger totalCarsParked = new AtomicInteger(0);
-    // private boolean printedForCurrentMinute;
 
     public CarPark(String name, int capacity, Road road, Clock clock) {
         this.name = name;
         this.capacity = capacity;
-        this.road = road;
+        this.entryRoad = road;
         this.carParkSpaces = new Car[capacity];
         this.occupiedSpaces = 0;
         this.carsParked = 0;
@@ -38,22 +30,20 @@ public class CarPark extends Thread {
     }
 
     public void run() {
-        // int iterations = 0;
         while (clock.getRunningTicks()) {
-            try {
-                Thread.sleep(clock.fastTrackPerSeconds(12));
-            } catch (InterruptedException exception) {
-                exception.printStackTrace();
-            }
+
+            simulateCarArrival();
 
             // Removing the car from the road
             admitCarFromRoad();
+        }
+    }
 
-            // // Check if the current tick is a multiple of 6
-            // if (clock.getTick() % 6 == 0) {
-            // // reportParkingSpaces();
-            // System.out.println(clock.getTick());
-            // }
+    private void simulateCarArrival() {
+        try {
+            Thread.sleep(clock.fastTrackPerSeconds(12));
+        } catch (InterruptedException exception) {
+            exception.printStackTrace();
         }
     }
 
@@ -69,14 +59,14 @@ public class CarPark extends Thread {
 
     public void admitCarFromRoad() {
         if (!isCarParkFull()) {
-            if (!road.isRoadEmpty()) {
-                Car car = road.removeCar();
+            if (!entryRoad.isRoadEmpty()) {
+                Car car = entryRoad.removeCar();
                 if (car != null) {
                     carParkSpaces[occupiedSpaces++] = car;
+
                     car.parked(); // gives a car a timestamp
 
                     carsParked++;
-                    // totalCarsParked++;
                     totalCarsParked.incrementAndGet();
                     totalJourneyTime += car.getJourneyTime();
                 }
@@ -103,11 +93,17 @@ public class CarPark extends Thread {
     }
 
     public void report() {
-        long averageJourneyTime = (carsParked == 0) ? 0 : totalJourneyTime / carsParked;
-
-        int elapsedSeconds = (int) averageJourneyTime;
-        int elapsedMinutes = elapsedSeconds / 60;
-
+        // Calculate average journey time per car (in nanoseconds)
+        long averageJourneyTimePerCar = (carsParked == 0) ? 0 : totalJourneyTime / carsParked;
+        
+        // Delay the average journey time by 10 times
+        long delayedJourneyTime = averageJourneyTimePerCar * 10;
+        
+        // Convert delayed journey time to seconds (assuming totalJourneyTime is in nanoseconds)
+        long elapsedSeconds = delayedJourneyTime / 1_000_000_000; // Convert nanoseconds to seconds
+        long elapsedMinutes = elapsedSeconds / 60;
+        elapsedSeconds = elapsedSeconds % 60; // Calculate remaining seconds after minutes
+            
         System.out.println(name + " " + occupiedSpaces + " Cars parked, average journey time " + elapsedMinutes + "m"
                 + elapsedSeconds + "s");
     }

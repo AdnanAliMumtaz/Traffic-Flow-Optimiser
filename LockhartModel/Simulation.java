@@ -1,35 +1,29 @@
 package LockhartModel;
 
-import java.util.concurrent.TimeUnit;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 public class Simulation {
     public static void main(String[] arg) {
+
+        // Check gridlock
+        // Check the waiting numbers
+        // Check the comments
+
         // Reading files
-        Configuration fileData = new Configuration("LockhartModel/Task 1 Scenarios/Scenario1.txt");
+        Configuration fileData = new Configuration(1); // Enter the scenario number to run any test from scenarios.
+
+        // EnterPoint Rates
         int southRate = fileData.getEntryPointRate("South");
         int eastRate = fileData.getEntryPointRate("East");
         int northRate = fileData.getEntryPointRate("North");
 
+        // Junction Rates
         int junctionAGreenLight = fileData.getJunctionLightTime("A");
         int junctionBGreenLight = fileData.getJunctionLightTime("B");
         int junctionCGreenLight = fileData.getJunctionLightTime("C");
         int junctionDGreenLight = fileData.getJunctionLightTime("D");
 
-        // Write down what are you testing
-        // 1. Need to understand whether the issue is with the time, program.
-
-        // Values in the seconds
-        // int junctionAGreenLight = 25;
-        // int junctionBGreenLight = 60;
-        // int junctionCGreenLight = 60;
-        // int junctionDGreenLight = 60;
-
         // Main Simulation begins here...
-        Clock clock = new Clock();
-        clock.setRunDurationInMinutest(6);
+        int runningMinutes = 60; // Running for the sped up 60 minutes.
+        Clock clock = new Clock(runningMinutes);
 
         // Junction Roads - A
         Road southEntryA = new Road(60);
@@ -56,7 +50,7 @@ public class Simulation {
         EntryPoint eastEntry = new EntryPoint("East", eastRate, eastEntryB, clock);
         EntryPoint northEntry = new EntryPoint("North", northRate, northEntryC, clock);
 
-        // Junctions
+        // Junctions - A Setting up
         String[] sequenceA = { "South", "North" };
         Junction junctionA = new Junction("A", junctionAGreenLight, clock, sequenceA);
         junctionA.setEntry("South", southEntryA);
@@ -64,6 +58,7 @@ public class Simulation {
         junctionA.setExit("West", westIndustrialPark);
         junctionA.setExit("North", southB);
 
+        // Junctions - B Setting up
         String[] sequenceB = { "South", "East", "North" };
         Junction junctionB = new Junction("B", junctionBGreenLight, clock, sequenceB);
         junctionB.setEntry("South", southB);
@@ -72,6 +67,7 @@ public class Simulation {
         junctionB.setExit("South", northA);
         junctionB.setExit("North", southC);
 
+        // Junctions - C Setting up
         String[] sequenceC = { "North", "South" };
         Junction junctionC = new Junction("C", junctionCGreenLight, clock, sequenceC);
         junctionC.setEntry("North", northEntryC);
@@ -80,6 +76,7 @@ public class Simulation {
         junctionC.setExit("South", southB);
         junctionC.setExit("North", northD);
 
+        // Junctions - D Setting up
         String[] sequenceD = { "North" };
         Junction junctionD = new Junction("D", junctionDGreenLight, clock, sequenceD);
         junctionD.setEntry("North", northD);
@@ -91,34 +88,6 @@ public class Simulation {
         CarPark ShoppingCentre = new CarPark("ShoppingCentre", 400, westShoppingCentre, clock);
         CarPark University = new CarPark("University", 100, northUniversity, clock);
         CarPark Station = new CarPark("Station", 150, southStation, clock);
-
-        // Create executor service with fixed thread pool
-        // int poolSize = Runtime.getRuntime().availableProcessors();
-        // ExecutorService executorService = Executors.newFixedThreadPool(poolSize);
-
-        // // Submit tasks to executor
-        // executorService.submit(clock);
-        // executorService.submit(southEntry);
-        // executorService.submit(eastEntry);
-        // executorService.submit(northEntry);
-        // executorService.submit(junctionA);
-        // executorService.submit(junctionB);
-        // executorService.submit(junctionC);
-        // executorService.submit(junctionD);
-        // executorService.submit(IndustrialPark);
-        // executorService.submit(ShoppingCentre);
-        // executorService.submit(University);
-        // executorService.submit(Station);
-
-        // // Shutdown executor after all tasks have been submitted
-        // executorService.shutdown();
-
-        // // Wait for threads to complete
-        // try {
-        // executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
-        // } catch (InterruptedException e) {
-        // e.printStackTrace();
-        // }
 
         // Start threads
         clock.start();
@@ -160,7 +129,7 @@ public class Simulation {
 
         // Final Output
         System.out.println("\n");
-        System.out.println("Total Number of Cars Created: " + EntryPoint.getCarsGenerated());
+        System.out.println("Total Number of Cars Created: " + EntryPoint.getTotalCarsGenerated());
         System.out.println("Total Number of Cars Atomic Queued: " + Road.getTotalCarsQueued());
         System.out.println("Total Number of Cars Parked: " + CarPark.getTotalCarsParked());
     }

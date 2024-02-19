@@ -1,8 +1,7 @@
 package LockhartModel;
+
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 import java.io.IOException;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
@@ -11,32 +10,34 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 public class Junction extends Thread {
-    private String junctionName;
+    private String name;
     private int greenLightTime;
-    private Clock clock;
     private int carCounting;
     private int carsRemaining;
     private Map<String, Road> entries;
     private Map<String, Road> exits;
     private Logger logger;
-    private String[] sequence;
-    private Lock lock;
+    private String[] lightSequence;
+    private Clock clock;
+
+    private int counter = 0;
 
     public Junction(String name, int greenTime, Clock clock, String[] sequence) {
-        this.junctionName = name;
+        this.name = name;
         this.greenLightTime = greenTime;
         this.clock = clock;
         this.carCounting = 0;
         this.carsRemaining = 0;
-
         this.entries = new HashMap<>();
         this.exits = new HashMap<>();
-
-        this.sequence = sequence;
-        this.lock = new ReentrantLock();
+        this.lightSequence = sequence;
 
         // Initialise logger
-        this.logger = Logger.getLogger(Junction.class.getName() + "." + junctionName);
+        logInitialiser();
+    }
+
+    private void logInitialiser() {
+        this.logger = Logger.getLogger(Junction.class.getName() + "." + name);
 
         Logger rootLogger = Logger.getLogger("");
         Handler[] handlers = rootLogger.getHandlers();
@@ -47,7 +48,7 @@ public class Junction extends Thread {
 
         try {
             String packageName = getClass().getPackage().getName();
-            String filePath = packageName.replace(".", "/") + "/" + junctionName + "_log.txt";
+            String filePath = packageName.replace(".", "/") + "/" + name + "_log.txt";
             FileHandler fileHandler = new FileHandler(filePath, false);
             fileHandler.setFormatter(new CustomFormatter());
             logger.addHandler(fileHandler);
@@ -73,85 +74,64 @@ public class Junction extends Thread {
 
     public void run() {
         while (clock.getRunningTicks()) {
-            CarMovement();
-            // lock.lock();
-            // try {
-            // CarMovement();
-            // } catch (Exception e) {
-            // e.printStackTrace();
-            // } finally {
-            // lock.unlock();
-            // }
-        }
+            try {
+                sleep((int) (Math.random() * 5));
+            } catch (InterruptedException ex) {
+                
+            }
 
-        // This doesn't work, produces the wrong results
-        // lock.lock();
-        // try {
-        // while (clock.getRunningTicks()) {
-        // CarMovement();
-        // }
-        // } catch (Exception e) {
-        // e.printStackTrace();
-        // } finally {
-        // lock.unlock();
-        // }
+            CarMovement();
+        }
     }
 
     private void CarMovement() {
-        for (String value : sequence) {
+        long sleepingTime = 500;
+        boolean islocked = true;
+        for (String value : lightSequence) {
             if (!clock.getRunningTicks()) {
                 break;
             }
 
             int start = clock.getTick();
-            int end = start + (greenLightTime / 10);
-
+            int end = start + (greenLightTime);
             Road entryRoad = entries.get(value);
-            boolean islocked = false;
+            int sleepingTimeInSeconds = 5; 
 
-            while (clock.getTick() < end && clock.getRunningTicks()) // Green light for entry
-            {
-                // Operation
-                if (!entryRoad.isRoadEmpty()) {
-                    String removedCar = entryRoad.peek().getDestination(); // Made this a synchornized
-                    islocked = passCar(entryRoad, removedCar);
-                    carCounting++;
+            while (clock.getTick() < end && clock.getRunningTicks()) { // Green Light Time Loop
+
+                while ((clock.getTick() + sleepingTimeInSeconds) < end && clock.getTick() < end && clock.getRunningTicks()) {
 
                     try {
                         Thread.sleep(clock.fastTrackPerMinutes(12));
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+
+                    if (!entryRoad.isRoadEmpty()) {
+                        String removedCar = entryRoad.peek().getDestination();
+                        Road exitRoad = getExitRoadForDestination(removedCar);
+                        if (exitRoad != null && !exitRoad.isRoadFull()) {
+                            Car carAdd = entryRoad.removeCar();
+                            if (carAdd != null) {
+                                exitRoad.addCar(carAdd);
+                                carCounting++;
+                            }
+                        }
+                    }
                 }
             }
-            // System.out.println("This is the time for e" + end);
 
-            // String logMessage = "Time: " + clock.getCurrentMinutes() + "m" +
-            // clock.getCurrentSeconds() + "s - Junction "
-            // + junctionName + ": " + carCounting + " cars through from " + value + ", " +
-            // this.carsRemaining
-            // + " cars waiting.";
-
-            // String logMessage = "Time: " + clock.getCurrentMinutes() + "m" +
-            // clock.getCurrentSeconds() + "s - Junction "
-            // + junctionName + ": " + carCounting + " cars through from " + value + ", This
-            // was the time for ending " + end + " with my current tick " + clock.getTick();
-
-            // if (this.carsRemaining > 0 && islocked) {
-            // logMessage += " GRIDLOCK";
-            // }
-            // logger.info(logMessage);
-
-            logActivity(value, islocked);
             this.carsRemaining = entryRoad.getCarsAmount();
 
+            logActivity(value, islocked);
             carCounting = 0;
         }
     }
 
+
     private void logActivity(String direction, boolean isLocked) {
         String logMessage = "Time: " + clock.getCurrentMinutes() + "m" + clock.getCurrentSeconds() + "s - Junction "
-                + junctionName + ": " + carCounting + " cars through from " + direction + ", " + this.carsRemaining
+                + name + ": " + carCounting + " cars through from " + direction + ", " + this.carsRemaining
                 + " cars waiting.";
         if (this.carsRemaining > 0 && isLocked) {
             logMessage += " GRIDLOCK";
@@ -165,6 +145,7 @@ public class Junction extends Thread {
         if (exitRoad != null && !exitRoad.isRoadFull()) {
             Car carAdd = road.removeCar();
             exitRoad.addCar(carAdd);
+            carCounting++;
             return false;
         } else { // if road is full
             return true;
@@ -172,83 +153,22 @@ public class Junction extends Thread {
     }
 
     private Road getExitRoadForDestination(String destination) {
-        if ("A" == junctionName) {
-            if ("IndustrialPark" == destination) {
-                return exits.get("West");
-            } else {
-                return exits.get("North");
-            }
-        } else if ("B" == junctionName) {
-            if ("IndustrialPark" == destination) {
-                return exits.get("South");
-                // return exits.get("North");
-            } else {
-                return exits.get("North");
-            }
-        } else if ("C" == junctionName) {
-            if ("IndustrialPark" == destination) {
-                return exits.get("South");
-            } else if ("ShoppingCentre" == destination) {
-                return exits.get("West");
-            } else {
-                return exits.get("North");
-            }
-        } else if ("D" == junctionName) {
-            if ("University" == destination) {
-                return exits.get("North");
-            } else {
-                return exits.get("South");
-            }
-        } else {
-            return null;
+        switch (name) {
+            case "A":
+                return ("IndustrialPark" == destination) ? exits.get("West") : exits.get("North");
+            case "B":
+                return ("IndustrialPark" == destination) ? exits.get("South") : exits.get("North");
+            case "C":
+                if ("IndustrialPark" == destination)
+                    return exits.get("South");
+                else if ("ShoppingCentre" == destination)
+                    return exits.get("West");
+                else
+                    return exits.get("North");
+            case "D":
+                return ("University" == destination) ? exits.get("North") : exits.get("South");
+            default:
+                return null;
         }
     }
-
-    // private Road getExitRoadForDestination(String destination) {
-    // if (junctionName == null) {
-    // return null;
-    // }
-
-    // switch (junctionName) {
-    // case "A":
-    // return "IndustrialPark".equals(destination) ? exits.get("West") :
-    // exits.get("North");
-    // case "B":
-    // return "IndustrialPark".equals(destination) ? exits.get("South") :
-    // exits.get("North");
-    // case "C":
-    // if ("IndustrialPark".equals(destination)) {
-    // return exits.get("South");
-    // } else if ("ShoppingCentre".equals(destination)) {
-    // return exits.get("West");
-    // } else {
-    // return exits.get("North");
-    // }
-    // case "D":
-    // return "University".equals(destination) ? exits.get("North") :
-    // exits.get("South");
-    // default:
-    // return null;
-    // }
-    // }
-
-    // private Road getExitRoadForDestination(String destination) {
-    // switch (junctionName) {
-    // case "A":
-    // return ("IndustrialPark" == destination) ? exits.get("West") :
-    // exits.get("North");
-    // case "B":
-    // return ("IndustrialPark" == destination) ? exits.get("South") :
-    // exits.get("North");
-    // case "C":
-    // if ("IndustrialPark" == destination) return exits.get("South");
-    // else if ("ShoppingCentre" == destination) return exits.get("West");
-    // else return exits.get("North");
-    // case "D":
-    // return ("University" == destination) ? exits.get("North") :
-    // exits.get("South");
-    // default:
-    // return null;
-    // }
-    // }
 }

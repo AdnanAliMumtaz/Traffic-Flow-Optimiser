@@ -9,9 +9,12 @@ import java.util.StringTokenizer;
 public class Configuration {
     private Map<String, Integer> entryPointsRates;
     private Map<String, Integer> junctionGreenTimes;
+    String configFilePath;
 
-    public Configuration(String configFilePath)
+    public Configuration(int configFileNumber)
     {
+        configFilePath = "LockhartModel/Task 1 Scenarios/Scenario" + configFileNumber + ".txt";
+
         // Outputing the name of the file
         System.out.println("Configuration File: " + configFilePath);
 

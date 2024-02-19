@@ -4,7 +4,7 @@ East 100
 south 450
 
 JUNCTIONS
-A 26
+A 25
 B 25
 C 25
 D 30
