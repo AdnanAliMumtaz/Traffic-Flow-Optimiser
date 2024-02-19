@@ -59,10 +59,12 @@ public class Configuration {
         }
     }
     
+    // Gives the entry point rates
     public int getEntryPointRate(String entryPoint) {
         return entryPointsRates.getOrDefault(entryPoint.toLowerCase(), 0);
     }
 
+    // Gives the junction green light times
     public int getJunctionLightTime(String junction)
     {
         return junctionGreenTimes.getOrDefault(junction.toUpperCase(), 0);   

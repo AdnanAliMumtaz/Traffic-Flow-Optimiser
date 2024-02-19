@@ -1,5 +1,4 @@
 package LockhartModel;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.io.IOException;
@@ -13,29 +12,30 @@ public class Junction extends Thread {
     private String name;
     private int greenLightTime;
     private int carCounting;
-    private int carsRemaining;
+    private int carRemaining;
     private Map<String, Road> entries;
     private Map<String, Road> exits;
     private Logger logger;
     private String[] lightSequence;
     private Clock clock;
-
-    private int counter = 0;
+    boolean islocked;
 
     public Junction(String name, int greenTime, Clock clock, String[] sequence) {
         this.name = name;
         this.greenLightTime = greenTime;
         this.clock = clock;
         this.carCounting = 0;
-        this.carsRemaining = 0;
+        this.carRemaining = 0;
         this.entries = new HashMap<>();
         this.exits = new HashMap<>();
         this.lightSequence = sequence;
+        this.islocked = false;
 
         // Initialise logger
         logInitialiser();
     }
 
+    // Logger initialiser
     private void logInitialiser() {
         this.logger = Logger.getLogger(Junction.class.getName() + "." + name);
 
@@ -57,6 +57,7 @@ public class Junction extends Thread {
         }
     }
 
+    // Custom logger formatter
     private static class CustomFormatter extends SimpleFormatter {
         @Override
         public String format(LogRecord record) {
@@ -64,91 +65,108 @@ public class Junction extends Thread {
         }
     }
 
+    // Set the entry roads for junction
     public void setEntry(String name, Road road) {
         entries.put(name, road);
     }
 
+    // Set the exit roads for junction
     public void setExit(String name, Road road) {
         exits.put(name, road);
     }
 
     public void run() {
         while (clock.getRunningTicks()) {
+
+            // Simulate random delay (to produce accruate timing in log reports)
             try {
                 sleep((int) (Math.random() * 5));
-            } catch (InterruptedException ex) {
-                
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
 
+            // Handling car movement
             CarMovement();
         }
     }
 
     private void CarMovement() {
-        long sleepingTime = 500;
-        boolean islocked = true;
+
+        // Runs through a specified sequence
         for (String value : lightSequence) {
             if (!clock.getRunningTicks()) {
                 break;
             }
+            
+            // Getting the sequence road
+            Road entryRoad = entries.get(value);
 
+            // Calculating the green light time
             int start = clock.getTick();
             int end = start + (greenLightTime);
-            Road entryRoad = entries.get(value);
-            int sleepingTimeInSeconds = 5; 
+            int sleepingTimeInSeconds = 5;
 
-            while (clock.getTick() < end && clock.getRunningTicks()) { // Green Light Time Loop
-
-                while ((clock.getTick() + sleepingTimeInSeconds) < end && clock.getTick() < end && clock.getRunningTicks()) {
-
-                    try {
-                        Thread.sleep(clock.fastTrackPerMinutes(12));
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                    if (!entryRoad.isRoadEmpty()) {
-                        String removedCar = entryRoad.peek().getDestination();
-                        Road exitRoad = getExitRoadForDestination(removedCar);
-                        if (exitRoad != null && !exitRoad.isRoadFull()) {
-                            Car carAdd = entryRoad.removeCar();
-                            if (carAdd != null) {
-                                exitRoad.addCar(carAdd);
-                                carCounting++;
-                            }
-                        }
-                    }
-                }
+            // Performing the green light operation 
+            while (clock.getTick() < end && clock.getRunningTicks()) // Green light
+            {
+                moveCarsDuringGreenLight(entryRoad, end, sleepingTimeInSeconds);
             }
 
-            this.carsRemaining = entryRoad.getCarsAmount();
-
+            // Sets the remaining cars on the entry Road to write in log file
+            this.carRemaining = entryRoad.getCarsAmount();
             logActivity(value, islocked);
+
+            // Resets the count of cars
             carCounting = 0;
         }
     }
 
+    private void moveCarsDuringGreenLight(Road entryRoad, int end, int sleepingTimeInSeconds) {
+        while ((clock.getTick() + sleepingTimeInSeconds) < end && clock.getTick() < end && clock.getRunningTicks()) {
+            
+            // Sleeps to simulate car going
+            simulateCarGoing();
 
-    private void logActivity(String direction, boolean isLocked) {
-        String logMessage = "Time: " + clock.getCurrentMinutes() + "m" + clock.getCurrentSeconds() + "s - Junction "
-                + name + ": " + carCounting + " cars through from " + direction + ", " + this.carsRemaining
-                + " cars waiting.";
-        if (this.carsRemaining > 0 && isLocked) {
-            logMessage += " GRIDLOCK";
+            // Checks if there is a car on road to move it to next road
+            if (!entryRoad.isRoadEmpty()) {
+                moveCarToExitRoad(entryRoad);
+            }
         }
-
-        logger.info(logMessage);
     }
 
-    private boolean passCar(Road road, String car) {
-        Road exitRoad = getExitRoadForDestination(car);
+    private void moveCarToExitRoad(Road entryRoad) {
+
+        // Gets the destination
+        String removedCar = entryRoad.peek().getDestination();
+        
+        // Gets the exit road
+        Road exitRoad = getExitRoadForDestination(removedCar);
+
+        // Checks if the exit has a space
         if (exitRoad != null && !exitRoad.isRoadFull()) {
-            Car carAdd = road.removeCar();
-            exitRoad.addCar(carAdd);
-            carCounting++;
-            return false;
-        } else { // if road is full
-            return true;
+            Car carAdd = entryRoad.removeCar();
+            if (carAdd != null) {
+
+                //Adds car to the road
+                exitRoad.addCar(carAdd);
+                carCounting++;
+
+                // This is to keep track of a gridlock
+                islocked = false;
+            }
+        } else if (exitRoad.isRoadFull()) {
+            // This is to keep track of a gridlock
+            islocked = true;
+        }
+    }
+
+    private void simulateCarGoing()
+    {
+        // Simulates sleeping for 12 simulated seconds 
+        try {
+            Thread.sleep(clock.fastTrackPerMinutes(12));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -170,5 +188,17 @@ public class Junction extends Thread {
             default:
                 return null;
         }
+    }
+
+    private synchronized void logActivity(String direction, boolean isLocked) {
+        String logMessage = "Time: " + clock.getCurrentMinutes() + "m" + clock.getCurrentSeconds() + "s - Junction "
+                + name + ": " + carCounting + " cars through from " + direction + ", " + this.carRemaining
+                + " cars waiting.";
+
+        if (this.carRemaining > 0 && isLocked) {
+            logMessage += " GRIDLOCK";
+        }
+
+        logger.info(logMessage);
     }
 }

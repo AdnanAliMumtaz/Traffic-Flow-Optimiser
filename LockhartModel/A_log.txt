@@ -1,0 +1,40 @@
+Time: 1m30s - Junction A: 11 cars through from South, 0 cars waiting.
+Time: 3m0s - Junction A: 7 cars through from North, 1 cars waiting.
+Time: 4m30s - Junction A: 7 cars through from South, 16 cars waiting. GRIDLOCK
+Time: 6m0s - Junction A: 3 cars through from North, 0 cars waiting.
+Time: 7m30s - Junction A: 5 cars through from South, 35 cars waiting. GRIDLOCK
+Time: 9m0s - Junction A: 5 cars through from North, 0 cars waiting.
+Time: 10m30s - Junction A: 11 cars through from South, 47 cars waiting. GRIDLOCK
+Time: 12m0s - Junction A: 15 cars through from North, 0 cars waiting.
+Time: 13m30s - Junction A: 0 cars through from South, 60 cars waiting. GRIDLOCK
+Time: 15m0s - Junction A: 5 cars through from North, 0 cars waiting.
+Time: 16m30s - Junction A: 4 cars through from South, 60 cars waiting. GRIDLOCK
+Time: 18m0s - Junction A: 4 cars through from North, 0 cars waiting.
+Time: 19m30s - Junction A: 10 cars through from South, 59 cars waiting. GRIDLOCK
+Time: 21m0s - Junction A: 11 cars through from North, 1 cars waiting.
+Time: 22m30s - Junction A: 0 cars through from South, 60 cars waiting. GRIDLOCK
+Time: 24m0s - Junction A: 5 cars through from North, 0 cars waiting.
+Time: 25m30s - Junction A: 8 cars through from South, 60 cars waiting. GRIDLOCK
+Time: 27m0s - Junction A: 6 cars through from North, 0 cars waiting.
+Time: 28m30s - Junction A: 14 cars through from South, 56 cars waiting. GRIDLOCK
+Time: 30m0s - Junction A: 17 cars through from North, 0 cars waiting.
+Time: 31m30s - Junction A: 0 cars through from South, 60 cars waiting. GRIDLOCK
+Time: 33m0s - Junction A: 3 cars through from North, 0 cars waiting.
+Time: 34m30s - Junction A: 8 cars through from South, 60 cars waiting. GRIDLOCK
+Time: 36m0s - Junction A: 7 cars through from North, 0 cars waiting.
+Time: 37m30s - Junction A: 15 cars through from South, 54 cars waiting. GRIDLOCK
+Time: 39m0s - Junction A: 14 cars through from North, 0 cars waiting.
+Time: 40m30s - Junction A: 0 cars through from South, 60 cars waiting. GRIDLOCK
+Time: 42m0s - Junction A: 3 cars through from North, 0 cars waiting.
+Time: 43m30s - Junction A: 6 cars through from South, 60 cars waiting. GRIDLOCK
+Time: 45m0s - Junction A: 2 cars through from North, 0 cars waiting.
+Time: 46m30s - Junction A: 15 cars through from South, 55 cars waiting. GRIDLOCK
+Time: 48m0s - Junction A: 12 cars through from North, 0 cars waiting.
+Time: 49m30s - Junction A: 0 cars through from South, 60 cars waiting. GRIDLOCK
+Time: 51m0s - Junction A: 2 cars through from North, 0 cars waiting.
+Time: 52m30s - Junction A: 6 cars through from South, 60 cars waiting. GRIDLOCK
+Time: 54m0s - Junction A: 7 cars through from North, 0 cars waiting.
+Time: 55m30s - Junction A: 18 cars through from South, 53 cars waiting.
+Time: 57m0s - Junction A: 16 cars through from North, 0 cars waiting.
+Time: 58m30s - Junction A: 4 cars through from South, 60 cars waiting. GRIDLOCK
+Time: 60m0s - Junction A: 1 cars through from North, 0 cars waiting.

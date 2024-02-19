@@ -4,32 +4,30 @@ public class Car {
     private String carDestination;
     private long entryTime;
     private long parkedTime;
-    private Clock clock;
 
     public Car(String destinations, long entryTimeInSeconds) {
         this.carDestination = destinations;
         this.entryTime = entryTimeInSeconds;
         this.parkedTime = 0;
-        this.clock = clock;
     }
 
+    // Method to mark the car as parked
     public void parked() {
         parkedTime = System.nanoTime();
     }
 
-    public long getJourneyTime()
-    {
+    // Method to calculate total journey time of the car
+    public long getTotalJourneyTime() {
         return parkedTime - entryTime;
     }
 
-    // Getters
+    // Getter for car destination
     public String getDestination() {
         return carDestination;
     }
 
-    // Destructor
-    public void finalize() 
-    {
+    // Destructor (not implementedd
+    public void finalize() {
 
     }
 }

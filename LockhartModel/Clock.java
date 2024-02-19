@@ -13,10 +13,6 @@ class Clock extends Thread {
         this.minutes = 0;
     }
 
-    // public void setSpedUpMinutes(int fastMinutes) {
-    //     this.runDuration = (fastMinutes * 6) * 10;
-    // }
-
     @Override
     public void run() {
         while (ticks < runDuration) {
@@ -45,6 +41,11 @@ class Clock extends Thread {
         }
     }
 
+    // A flag for running the whole program
+    public boolean getRunningTicks() {
+        return ticks < runDuration;
+    }
+
     public int getCurrentMinutes() {
         return minutes;
     }
@@ -57,21 +58,20 @@ class Clock extends Thread {
         this.ticks++;
     }
 
+    // Gives the fasttrack values for the entryPoint to calculate the time for sleep to simulate a car movement
     public long fastTrackPerHour(int originalRate) {
         return 3600000 / (originalRate * 10);
     }
 
+    // Gives the fast track values for the carPark to calculate the time for sleep  to simulate a car movement
     public long fastTrackPerSeconds(long value) {
         return (long) (value * 0.1 * 1000);
     }
 
+    // Gives the fast track values for the junction to calculate the time for sleep to simulate a car movement
     public long fastTrackPerMinutes(int value) {
         long sleepDuration = 60000 / (value * 10);
         return sleepDuration;
-    }
-
-    public boolean getRunningTicks() {
-        return ticks < runDuration;
     }
 
     public synchronized int getTick() {

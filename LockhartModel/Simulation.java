@@ -3,12 +3,8 @@ package LockhartModel;
 public class Simulation {
     public static void main(String[] arg) {
 
-        // Check gridlock
-        // Check the waiting numbers
-        // Check the comments
-
         // Reading files
-        Configuration fileData = new Configuration(1); // Enter the scenario number to run any test from scenarios.
+        Configuration fileData = new Configuration(5); // Enter the scenario number to run any test from scenarios.
 
         // EnterPoint Rates
         int southRate = fileData.getEntryPointRate("South");
@@ -106,17 +102,17 @@ public class Simulation {
         // Wait for threads to complete
         try {
             clock.join();
-            southEntry.join();
-            eastEntry.join();
-            northEntry.join();
-            junctionA.join();
-            junctionB.join();
-            junctionC.join();
-            junctionD.join();
-            IndustrialPark.join();
-            ShoppingCentre.join();
-            University.join();
-            Station.join();
+            // southEntry.join();
+            // eastEntry.join();
+            // northEntry.join();
+            // junctionA.join();
+            // junctionB.join();
+            // junctionC.join();
+            // junctionD.join();
+            // IndustrialPark.join();
+            // ShoppingCentre.join();
+            // University.join();
+            // Station.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -130,7 +126,7 @@ public class Simulation {
         // Final Output
         System.out.println("\n");
         System.out.println("Total Number of Cars Created: " + EntryPoint.getTotalCarsGenerated());
-        System.out.println("Total Number of Cars Atomic Queued: " + Road.getTotalCarsQueued());
+        System.out.println("Total Number of Cars Queued: " + Road.getTotalCarsQueued());
         System.out.println("Total Number of Cars Parked: " + CarPark.getTotalCarsParked());
     }
 }
