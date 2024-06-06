@@ -102,17 +102,6 @@ public class Simulation {
         // Wait for threads to complete
         try {
             clock.join();
-            // southEntry.join();
-            // eastEntry.join();
-            // northEntry.join();
-            // junctionA.join();
-            // junctionB.join();
-            // junctionC.join();
-            // junctionD.join();
-            // IndustrialPark.join();
-            // ShoppingCentre.join();
-            // University.join();
-            // Station.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

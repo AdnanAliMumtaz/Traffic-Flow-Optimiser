@@ -1,40 +1,40 @@
-Time: 1m30s - Junction B: 10 cars through from South, 2 cars waiting.
+Time: 1m30s - Junction B: 8 cars through from South, 1 cars waiting.
 Time: 3m0s - Junction B: 10 cars through from East, 0 cars waiting.
 Time: 4m30s - Junction B: 0 cars through from North, 0 cars waiting.
 Time: 6m0s - Junction B: 7 cars through from South, 0 cars waiting.
-Time: 7m30s - Junction B: 15 cars through from East, 0 cars waiting.
+Time: 7m30s - Junction B: 13 cars through from East, 2 cars waiting. GRIDLOCK
 Time: 9m0s - Junction B: 0 cars through from North, 0 cars waiting.
-Time: 10m30s - Junction B: 11 cars through from South, 7 cars waiting. GRIDLOCK
-Time: 12m0s - Junction B: 16 cars through from East, 0 cars waiting.
+Time: 10m30s - Junction B: 15 cars through from South, 7 cars waiting. GRIDLOCK
+Time: 12m0s - Junction B: 17 cars through from East, 1 cars waiting.
 Time: 13m30s - Junction B: 0 cars through from North, 0 cars waiting.
 Time: 15m0s - Junction B: 7 cars through from South, 0 cars waiting.
-Time: 16m30s - Junction B: 14 cars through from East, 1 cars waiting. GRIDLOCK
+Time: 16m30s - Junction B: 14 cars through from East, 3 cars waiting. GRIDLOCK
 Time: 18m0s - Junction B: 0 cars through from North, 0 cars waiting.
 Time: 19m30s - Junction B: 15 cars through from South, 7 cars waiting. GRIDLOCK
-Time: 21m0s - Junction B: 17 cars through from East, 0 cars waiting.
+Time: 21m0s - Junction B: 17 cars through from East, 1 cars waiting.
 Time: 22m30s - Junction B: 0 cars through from North, 0 cars waiting.
 Time: 24m0s - Junction B: 7 cars through from South, 0 cars waiting.
-Time: 25m30s - Junction B: 15 cars through from East, 0 cars waiting.
+Time: 25m30s - Junction B: 17 cars through from East, 0 cars waiting.
 Time: 27m0s - Junction B: 0 cars through from North, 0 cars waiting.
-Time: 28m30s - Junction B: 13 cars through from South, 7 cars waiting. GRIDLOCK
-Time: 30m0s - Junction B: 16 cars through from East, 0 cars waiting.
+Time: 28m30s - Junction B: 16 cars through from South, 7 cars waiting. GRIDLOCK
+Time: 30m0s - Junction B: 15 cars through from East, 0 cars waiting.
 Time: 31m30s - Junction B: 0 cars through from North, 0 cars waiting.
 Time: 33m0s - Junction B: 7 cars through from South, 0 cars waiting.
-Time: 34m30s - Junction B: 14 cars through from East, 1 cars waiting. GRIDLOCK
+Time: 34m30s - Junction B: 15 cars through from East, 1 cars waiting. GRIDLOCK
 Time: 36m0s - Junction B: 0 cars through from North, 0 cars waiting.
-Time: 37m30s - Junction B: 15 cars through from South, 7 cars waiting. GRIDLOCK
-Time: 39m0s - Junction B: 17 cars through from East, 0 cars waiting.
+Time: 37m30s - Junction B: 16 cars through from South, 7 cars waiting. GRIDLOCK
+Time: 39m0s - Junction B: 16 cars through from East, 0 cars waiting.
 Time: 40m30s - Junction B: 0 cars through from North, 0 cars waiting.
 Time: 42m0s - Junction B: 7 cars through from South, 0 cars waiting.
-Time: 43m30s - Junction B: 12 cars through from East, 3 cars waiting. GRIDLOCK
+Time: 43m30s - Junction B: 14 cars through from East, 2 cars waiting. GRIDLOCK
 Time: 45m0s - Junction B: 0 cars through from North, 0 cars waiting.
 Time: 46m30s - Junction B: 17 cars through from South, 7 cars waiting. GRIDLOCK
-Time: 48m0s - Junction B: 17 cars through from East, 2 cars waiting.
+Time: 48m0s - Junction B: 17 cars through from East, 1 cars waiting.
 Time: 49m30s - Junction B: 0 cars through from North, 0 cars waiting.
 Time: 51m0s - Junction B: 7 cars through from South, 0 cars waiting.
-Time: 52m30s - Junction B: 17 cars through from East, 0 cars waiting.
+Time: 52m30s - Junction B: 14 cars through from East, 2 cars waiting. GRIDLOCK
 Time: 54m0s - Junction B: 0 cars through from North, 0 cars waiting.
-Time: 55m30s - Junction B: 17 cars through from South, 4 cars waiting. GRIDLOCK
-Time: 57m0s - Junction B: 16 cars through from East, 0 cars waiting.
+Time: 55m30s - Junction B: 14 cars through from South, 7 cars waiting. GRIDLOCK
+Time: 57m0s - Junction B: 17 cars through from East, 1 cars waiting.
 Time: 58m30s - Junction B: 0 cars through from North, 0 cars waiting.
 Time: 60m0s - Junction B: 7 cars through from South, 0 cars waiting.
