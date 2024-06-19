@@ -14,6 +14,5 @@ The project is implemented in Java and leverages concurrency to simulate real-ti
 
 Here is a diagram of the road network in Gridlock-on-Ribble, including entry points, junctions, and destinations:
 <div align="center">
-  <img width="650" alt="Road Network Diagram" src="https://github.com/AdnanAliMumtaz/Traffic-Flow-Optimiser/assets/81415901/8fc67974-2f7f-4dad-a649-28e4836b0a33">
-  <p>Diagram of the road network in Gridlock-on-Ribble, including entry points, junctions, and destinations.</p>
+  <img width="600" alt="Road Network Diagram" src="https://github.com/AdnanAliMumtaz/Traffic-Flow-Optimiser/assets/81415901/8fc67974-2f7f-4dad-a649-28e4836b0a33">
 </div>
