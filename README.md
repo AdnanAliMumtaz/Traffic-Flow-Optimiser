@@ -1,4 +1,4 @@
-## Traffic Flow Optimiser
+# Traffic Flow Optimiser
 The Gridlock-on-Ribble Traffic Simulation project models the traffic flow in the fictional industrial town of Gridlock-on-Ribble, notorious for its severe morning traffic jams. The town's layout includes entry points from the north, south, and east, leading to various destinations like an industrial park, shopping centre, university, and station. This project aims to simulate and analyse the impact of different traffic light timings at intersections to optimise traffic flow and reduce congestion.
 
 ### What Does This Project Do?
@@ -17,7 +17,7 @@ Here is a diagram of the road network in Gridlock-on-Ribble, including entry poi
   <img width="550" alt="Road Network Diagram" src="https://github.com/AdnanAliMumtaz/Traffic-Flow-Optimiser/assets/81415901/8fc67974-2f7f-4dad-a649-28e4836b0a33">
 </div>
 
-### Classes and Architecture
+## Classes and Architecture
 
 The Gridlock-on-Ribble Traffic Simulation project is structured around several key classes that represent different components of the simulation:
 
