@@ -9,3 +9,11 @@ The Gridlock-on-Ribble Traffic Simulation project models the traffic flow in the
 - **Configurable Simulation**: Allows customisation of entry rates and traffic light timings through configuration files, enabling various scenarios to be tested.
 
 The project is implemented in Java and leverages concurrency to simulate real-time traffic management effectively.
+
+### Road Network Diagram
+
+Here is a diagram of the road network in Gridlock-on-Ribble, including entry points, junctions, and destinations:
+<div align="center">
+  <img width="650" alt="Road Network Diagram" src="https://github.com/AdnanAliMumtaz/Traffic-Flow-Optimiser/assets/81415901/8fc67974-2f7f-4dad-a649-28e4836b0a33">
+  <p>Diagram of the road network in Gridlock-on-Ribble, including entry points, junctions, and destinations.</p>
+</div>
