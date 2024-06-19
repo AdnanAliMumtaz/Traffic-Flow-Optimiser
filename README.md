@@ -17,20 +17,6 @@ Here is a diagram of the road network in Gridlock-on-Ribble, including entry poi
   <img width="550" alt="Road Network Diagram" src="https://github.com/AdnanAliMumtaz/Traffic-Flow-Optimiser/assets/81415901/8fc67974-2f7f-4dad-a649-28e4836b0a33">
 </div>
 
-### Simulation Details
-
-The Gridlock-on-Ribble Traffic Simulation project models traffic dynamics in the town with the following features:
-
-- **Traffic Flow**: Vehicles enter from designated entry points at configurable rates, navigate roads controlled by junctions with simulated traffic lights, and park at specified destinations.
-  
-- **Concurrency**: Uses Java's concurrency to handle multiple components (entry points, junctions, car parks) as threads, ensuring realistic traffic interactions.
-  
-- **Road Management**: Roads act as fixed-size buffers between components, facilitating safe vehicle movement and updates within the simulation.
-  
-- **Traffic Light Control**: Junctions manage traffic flow with configurable light timings, controlling when vehicles can proceed through intersections.
-  
-- **Simulation Clock**: Manages time progression, enabling time-based events, logging, and reporting of simulation activities. The simulation runs at a scaled time rate where one hour in simulation time corresponds to approximately 6 minutes of real-time, allowing for efficient evaluation of traffic scenarios.
-
 ### Classes and Architecture
 
 The Gridlock-on-Ribble Traffic Simulation project is structured around several key classes that represent different components of the simulation:
@@ -50,3 +36,18 @@ The Gridlock-on-Ribble Traffic Simulation project is structured around several k
 - **Simulation Class**: Coordinates the initialization and execution of the entire simulation.
 
 This architecture ensures a clear separation of concerns and facilitates the realistic modeling of traffic behaviors and interactions within Gridlock-on-Ribble.
+
+
+### Simulation Details
+
+The Gridlock-on-Ribble Traffic Simulation project models traffic dynamics in the town with the following features:
+
+- **Traffic Flow**: Vehicles enter from designated entry points at configurable rates, navigate roads controlled by junctions with simulated traffic lights, and park at specified destinations.
+  
+- **Concurrency**: Uses Java's concurrency to handle multiple components (entry points, junctions, car parks) as threads, ensuring realistic traffic interactions.
+  
+- **Road Management**: Roads act as fixed-size buffers between components, facilitating safe vehicle movement and updates within the simulation.
+  
+- **Traffic Light Control**: Junctions manage traffic flow with configurable light timings, controlling when vehicles can proceed through intersections.
+  
+- **Simulation Clock**: Manages time progression, enabling time-based events, logging, and reporting of simulation activities. The simulation runs at a scaled time rate where one hour in simulation time corresponds to approximately 6 minutes of real-time, allowing for efficient evaluation of traffic scenarios.
