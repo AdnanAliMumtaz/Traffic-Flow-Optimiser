@@ -62,3 +62,38 @@ Example log entry:
 
 ## Disclaimer
 This project is for educational purposes only. Unauthorized copying and distribution of this project are strictly prohibited. Contributions are not accepted.
+
+
+## Installation
+
+### Clone the Repository
+
+Clone the repository to your local machine:
+
+```bash
+git clone https://github.com/AdnanAliMumtaz/Traffic-Flow-Optimiser.git
+cd Traffic-Flow-Optimiser
+```
+
+### Compile the Java Code
+Navigate to the cloned directory and compile the Java code:
+
+```bash
+javac -d bin src/*.java
+```
+
+### Run the Simulation
+To run the simulation, execute the following command:
+
+```bash
+java -cp bin LockhartModel.Simulation
+```
+
+Ensure you have Java Development Kit (JDK) installed on your system and configured in the PATH environment variable.
+
+## Usage
+
+To start the simulation, execute the main class:
+
+bash
+java -cp bin LockhartModel.Simulation
