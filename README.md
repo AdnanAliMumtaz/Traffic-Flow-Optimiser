@@ -52,17 +52,13 @@ The Gridlock-on-Ribble Traffic Simulation project models traffic dynamics in the
   
 - **Simulation Clock**: Manages time progression, enabling time-based events, logging, and reporting of simulation activities. The simulation runs at a scaled time rate where one hour in simulation time corresponds to approximately 6 minutes of real-time, allowing for efficient evaluation of traffic scenarios.
 
-## Reporting
+### Reporting
 1. **Console Output**: At the start, the program outputs the name of the configuration file being used.
 2. **Log Files**: Each junction records its activities, including cars passed, queue lengths, and potential gridlocks, in a log file.
 
 Example log entry:
 - `Time: 12m13s - Junction D: 4 cars through from East, 6 cars waiting.`
 - `Time: 12m14s - Junction B: 0 cars through from North, 12 cars waiting. GRIDLOCK`
-
-## Disclaimer
-This project is for educational purposes only. Unauthorized copying and distribution of this project are strictly prohibited. Contributions are not accepted.
-
 
 ## Installation
 
@@ -95,5 +91,9 @@ Ensure you have Java Development Kit (JDK) installed on your system and configur
 
 To start the simulation, execute the main class:
 
-bash
+```bash
 java -cp bin LockhartModel.Simulation
+```
+
+## Disclaimer
+This project is for educational purposes only. Unauthorized copying and distribution of this project are strictly prohibited. Contributions are not accepted.
