@@ -16,3 +16,37 @@ Here is a diagram of the road network in Gridlock-on-Ribble, including entry poi
 <div align="center">
   <img width="550" alt="Road Network Diagram" src="https://github.com/AdnanAliMumtaz/Traffic-Flow-Optimiser/assets/81415901/8fc67974-2f7f-4dad-a649-28e4836b0a33">
 </div>
+
+### Simulation Details
+
+The Gridlock-on-Ribble Traffic Simulation project models traffic dynamics in the town with the following features:
+
+- **Traffic Flow**: Vehicles enter from designated entry points at configurable rates, navigate roads controlled by junctions with simulated traffic lights, and park at specified destinations.
+  
+- **Concurrency**: Uses Java's concurrency to handle multiple components (entry points, junctions, car parks) as threads, ensuring realistic traffic interactions.
+  
+- **Road Management**: Roads act as fixed-size buffers between components, facilitating safe vehicle movement and updates within the simulation.
+  
+- **Traffic Light Control**: Junctions manage traffic flow with configurable light timings, controlling when vehicles can proceed through intersections.
+  
+- **Simulation Clock**: Manages time progression, enabling time-based events, logging, and reporting of simulation activities.
+
+### Classes and Architecture
+
+The Gridlock-on-Ribble Traffic Simulation project is structured around several key classes that represent different components of the simulation:
+
+- **Car Class**: Represents individual cars within the simulation.
+  
+- **EntryPoint Class**: Simulates vehicles entering the town from specific entry points.
+  
+- **Road Class**: Acts as a buffer between different components (entry points, junctions, and car parks).
+  
+- **CarPark Class**: Represents destinations within Gridlock-on-Ribble where vehicles ultimately park.
+  
+- **Junction Class**: Controls traffic flow between different roads using simulated traffic lights.
+  
+- **Configuration Class**: Reads configuration files to set up initial parameters for entry point rates and junction timings.
+  
+- **Simulation Class**: Coordinates the initialization and execution of the entire simulation.
+
+This architecture ensures a clear separation of concerns and facilitates the realistic modeling of traffic behaviors and interactions within Gridlock-on-Ribble.
