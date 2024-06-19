@@ -29,7 +29,7 @@ The Gridlock-on-Ribble Traffic Simulation project models traffic dynamics in the
   
 - **Traffic Light Control**: Junctions manage traffic flow with configurable light timings, controlling when vehicles can proceed through intersections.
   
-- **Simulation Clock**: Manages time progression, enabling time-based events, logging, and reporting of simulation activities.
+- **Simulation Clock**: Manages time progression, enabling time-based events, logging, and reporting of simulation activities. The simulation runs at a scaled time rate where one hour in simulation time corresponds to approximately 6 minutes of real-time, allowing for efficient evaluation of traffic scenarios.
 
 ### Classes and Architecture
 
